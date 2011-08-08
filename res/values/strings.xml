@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Piraten Karte</string>
+    <string name="sync_login">Anmelden...</string>
+    <string name="sync_cleardata">Lösche alte Daten...</string>
+    <string name="sync_loading">Lade Plakate...</string>
+    <string name="sync_logout">Abmelden...</string>
+    <string name="sync_processing">Verabeite Daten...</string>
+    <string name="sync_sending">Sende Änderungen...</string>
+    
+    <string name="menu_sync">Datenabgleich</string>
+    <string name="menu_add">Marker setzten</string>
+    <string name="menu_delete">Marker löschen</string>
+    
+    <string name="marker_kind">Marker Art:</string>
+    
+    <string name="tvComment">Kommentar</string>
+    
+    <string name="btSave">Speichern</string>
+    
+    <string name="choose_marker">Marker Art</string>
+    <string name="get_position">Suche aktuelle Position</string>
+    <string name="current_accuracy">Genauigkeit %.1f Meter</string>
+    
+    <string-array name="markertypes">
+    	<item>Unbearbeitet</item>
+        <item>Plakat hängt</item>
+        <item>Plakat wurde gestohlen</item>
+        <item>Gute Stelle für ein Plakat</item>
+        <item>Plakatwand der Gemeinde</item>
+        <item>Plakat an der Plakatwand</item>
+    </string-array>
+        <string name="settings">Einstellungen</string>
+        <string name="settings_logindata">Login Daten</string>
+        <string name="settings_username">Benutzername</string>
+        <string name="settings_password">Passwort</string>
+        <string name="behavior">Verhalten</string>    
+        <string name="settings_accuracy">Minimale Genauigkeit</string>
+        <string name="settings_accuracy_meters">: %.2f Meter</string>
+        <string name="settings_accuracy_summary">Gibt an wie genau die aktuelle Position ermittelt werden soll, bevor ein Plakat eingetragen wird.</string>
+        
+        <string name="alert_error">Fehler</string>
+        <string name="error_login_failed">Login fehlgeschlagen</string>
+</resources>

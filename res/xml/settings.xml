@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+	android:title="@string/settings">
+	<PreferenceCategory android:title="@string/settings_logindata">
+		<EditTextPreference android:key="username"
+			android:title="@string/settings_username"></EditTextPreference>
+		<EditTextPreference android:key="password"
+			android:title="@string/settings_password" android:password="true"></EditTextPreference>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/behavior">
+		<com.boombuler.piraten.map.AccuracyPreference
+			android:summary="@string/settings_accuracy_summary"  
+			android:max="100" 
+			android:title="@string/settings_accuracy" 
+			android:key="accuracy" 
+			android:defaultValue="60"/>
+
+	</PreferenceCategory>
+
+</PreferenceScreen>
