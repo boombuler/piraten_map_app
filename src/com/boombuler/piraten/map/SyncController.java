@@ -123,17 +123,27 @@ public class SyncController implements Runnable {
 		}
 	}
 	
-	private void ClearData() {
+	private void ClearData(int id) {
 		DBAdapter dba = new DBAdapter(mContext);
 		try {
 			dba.open();
-			dba.ClearData();
+			dba.ClearData(id);
 		} finally {
 			dba.close();
 		}
 	}
 	
-	private void SendChanges() {
+	private void ClearAllData() {
+		DBAdapter dba = new DBAdapter(mContext);
+		try {
+			dba.open();
+			dba.ClearAllData();
+		} finally {
+			dba.close();
+		}
+	}
+	
+	private boolean SendChanges() {
 		ArrayList<PlakatOverlayItem> inserted = new ArrayList<PlakatOverlayItem>();
 		ArrayList<PlakatOverlayItem> changed = new ArrayList<PlakatOverlayItem>();
 		ArrayList<Integer> deleted = new ArrayList<Integer>();
@@ -146,17 +156,27 @@ public class SyncController implements Runnable {
 		}
 		
 		for(PlakatOverlayItem itm : inserted) {
-			SendNewItem(itm);
+			if (SendNewItem(itm))
+				ClearData(itm.getId());
+			else
+				return false;
 		}
 		for(PlakatOverlayItem itm : changed) {
-			SendChangedItem(itm);
+			if (SendChangedItem(itm))
+				ClearData(itm.getId());
+			else
+				return false;
 		}
 		for(Integer id : deleted) {
-			SendDeletedItem(id);
+			if (SendDeletedItem(id))
+				ClearData(id);
+			else
+				return false;
 		}
+		return true;
 	}
 	
-	private void SendNewItem(PlakatOverlayItem item) {
+	private boolean SendNewItem(PlakatOverlayItem item) {
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(4);
         nameValuePairs.add(new BasicNameValuePair("action", "add"));
         nameValuePairs.add(new BasicNameValuePair("typ", item.getTypeStr()));
@@ -172,11 +192,14 @@ public class SyncController implements Runnable {
 		try {
 			mClient.execute(get);
 		} catch (ClientProtocolException e) {
+			return false;
 		} catch (IOException e) {
+			return false;
 		}
+		return true;
 	}
 	
-	private void SendDeletedItem(Integer id) {
+	private boolean SendDeletedItem(Integer id) {
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
         nameValuePairs.add(new BasicNameValuePair("action", "del"));
         nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(id)));
@@ -185,11 +208,14 @@ public class SyncController implements Runnable {
 		try {
 			mClient.execute(get);
 		} catch (ClientProtocolException e) {
+			return false;
 		} catch (IOException e) {
+			return false;
 		}
+		return true;
 	}
 	
-	private void SendChangedItem(PlakatOverlayItem item) {
+	private boolean SendChangedItem(PlakatOverlayItem item) {
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
         nameValuePairs.add(new BasicNameValuePair("action", "change"));
         nameValuePairs.add(new BasicNameValuePair("type", item.getTypeStr()));
@@ -199,8 +225,11 @@ public class SyncController implements Runnable {
 		try {
 			mClient.execute(get);
 		} catch (ClientProtocolException e) {
+			return false;
 		} catch (IOException e) {
+			return false;
 		}
+		return true;
 	}
 	
 	public void setProgressDialog(ProgressDialog dialog) {
@@ -241,9 +270,7 @@ public class SyncController implements Runnable {
 	public void setOnCompleteListener(Runnable listener) {
 		mOnCompleteListener = listener;
 	}
-	
-
-	
+		
 	public void run() {
 		SetProgressText(R.string.sync_login);
 		ShowProgressDialog();
@@ -252,21 +279,24 @@ public class SyncController implements Runnable {
 			if (Login()) {
 				try {
 					SetProgressText(R.string.sync_sending);
-					SendChanges();
-					
-					SetProgressText(R.string.sync_cleardata);
-					ClearData();
-					
-					SetProgressText(R.string.sync_loading);
-					LoadCurrentItems();
+					if (SendChanges()) {					
+						SetProgressText(R.string.sync_cleardata);
+						ClearAllData();
+						
+						SetProgressText(R.string.sync_loading);
+						LoadCurrentItems();
+					} else
+						failed = true;
 				}
 				finally {
 					SetProgressText(R.string.sync_logout);
 					Logout();
 				}
-				SetProgressText(R.string.sync_processing);
-				if (mOnCompleteListener != null)
-					mContext.runOnUiThread(mOnCompleteListener);
+				if (!failed) {
+					SetProgressText(R.string.sync_processing);
+					if (mOnCompleteListener != null)
+						mContext.runOnUiThread(mOnCompleteListener);
+				}
 			} else {
 				failed = true;
 			}

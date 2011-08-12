@@ -51,7 +51,8 @@ public class PlakatDetailsActivity extends Activity
 	        		res.getDrawable(R.drawable.plakat_dieb), 
 	        		res.getDrawable(R.drawable.plakat_niceplace), 
 	        		res.getDrawable(R.drawable.wand),
-	        		res.getDrawable(R.drawable.wand_ok)};
+	        		res.getDrawable(R.drawable.wand_ok),
+	        		res.getDrawable(R.drawable.plakat_wrecked)};
 		}
 		
 		public int getCount() {

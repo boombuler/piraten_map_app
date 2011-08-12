@@ -135,7 +135,13 @@ public class DBAdapter {
 		}
 	}
 
-	public void ClearData() {
+	public void ClearData(int id) {
+		String[] sid = new String[] { String.valueOf(id) };
+		mDatabase.delete(TABLE_PLAKATE, PLAKATE_ID + "=?", sid);
+		mDatabase.delete(TABLE_CHANGES, CHANGES_ID + "=?", sid);
+	}
+	
+	public void ClearAllData() {
 		mDatabase.delete(TABLE_PLAKATE, null, null);
 		mDatabase.delete(TABLE_CHANGES, null, null);
 	}

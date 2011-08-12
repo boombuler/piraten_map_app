@@ -12,6 +12,7 @@ public class PlakatOverlayItem extends OverlayItem {
 	private static final String STR_PLAKAT_NICE_PLACE = "plakat_niceplace";
 	private static final String STR_WAND = "wand";
 	private static final String STR_WAND_OK = "wand_ok";
+	private static final String STR_PLAKAT_WRECKED = "plakat_wrecked";
 
 	private static final int INT_DEFAULT = 0;
 	private static final int INT_PLAKAT_OK = 1;
@@ -19,6 +20,7 @@ public class PlakatOverlayItem extends OverlayItem {
 	private static final int INT_PLAKAT_NICE_PLACE = 3;
 	private static final int INT_WAND = 4;
 	private static final int INT_WAND_OK = 5;
+	private static final int INT_PLAKAT_WRECKED = 6;
 	
 	final int mId;
 	final String mLastModified;
@@ -43,6 +45,7 @@ public class PlakatOverlayItem extends OverlayItem {
 		case INT_PLAKAT_NICE_PLACE: return STR_PLAKAT_NICE_PLACE;
 		case INT_WAND: return STR_WAND;
 		case INT_WAND_OK: return STR_WAND_OK;
+		case INT_PLAKAT_WRECKED: return STR_PLAKAT_WRECKED;
 		}
 		return "";
 	}
@@ -51,9 +54,9 @@ public class PlakatOverlayItem extends OverlayItem {
 		return mComment;
 	}
 	
-	public static void InitResources(Drawable p_default, Drawable p_ok, Drawable p_dieb, Drawable p_nice, Drawable w_default, Drawable w_ok)
+	public static void InitResources(Drawable p_default, Drawable p_ok, Drawable p_dieb, Drawable p_nice, Drawable w_default, Drawable w_ok, Drawable p_wracked)
 	{
-		MIcons = new Drawable[] { p_default, p_ok, p_dieb, p_nice, w_default, w_ok };
+		MIcons = new Drawable[] { p_default, p_ok, p_dieb, p_nice, w_default, w_ok, p_wracked };
 		PlakatOverlay.Prepare(MIcons);
 	}
 	
@@ -82,6 +85,8 @@ public class PlakatOverlayItem extends OverlayItem {
 			return INT_WAND;
 		else if (STR_WAND_OK.equals(type))
 			return INT_WAND_OK;
+		else if (STR_PLAKAT_WRECKED.equals(type))
+			return INT_PLAKAT_WRECKED;
 		else
 			return INT_DEFAULT;
 	}
