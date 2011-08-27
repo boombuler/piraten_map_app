@@ -34,7 +34,8 @@ public class PirateMap extends MapActivity {
         		res.getDrawable(R.drawable.plakat_niceplace), 
         		res.getDrawable(R.drawable.wand),
         		res.getDrawable(R.drawable.wand_ok),
-        		res.getDrawable(R.drawable.plakat_wrecked));
+        		res.getDrawable(R.drawable.plakat_wrecked),
+        		res.getDrawable(R.drawable.plakat_a0));
         
         mMapView = (MapView)findViewById(R.id.mapview);
         mMapView.setBuiltInZoomControls(true);
