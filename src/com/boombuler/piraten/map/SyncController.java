@@ -6,7 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.Header;
+import org.apache.http.HeaderElement;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.NameValuePair;
 import org.apache.http.ProtocolException;
 import org.apache.http.client.ClientProtocolException;
@@ -22,6 +27,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.boombuler.piraten.utils.InflatingEntity;
 import com.google.android.maps.GeoPoint;
 
 import android.app.AlertDialog;
@@ -31,7 +37,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 public class SyncController implements Runnable {
-
+	private static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
+	private static final String ENCODING_GZIP = "gzip";
 	
 	private static final String URL_SERVER = "http://piraten.boombuler.de/";
 	private static final String URL_LOGIN = URL_SERVER + "login.php";
@@ -59,10 +66,40 @@ public class SyncController implements Runnable {
 				return null;
 			}
 		});
+		ActivateGZipSupport();
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		mUsername = prefs.getString(SettingsActivity.KEY_USERNAME, "");
 		mPassword = prefs.getString(SettingsActivity.KEY_PASSWORD, "");
 	}
+	
+	private void ActivateGZipSupport() {
+		mClient.addRequestInterceptor(new HttpRequestInterceptor() {
+			  public void process(HttpRequest request, HttpContext context) {
+			    // Add header to accept gzip content
+			    if (!request.containsHeader(HEADER_ACCEPT_ENCODING)) {
+			      request.addHeader(HEADER_ACCEPT_ENCODING, ENCODING_GZIP);
+			    }
+			  }
+			});
+
+			mClient.addResponseInterceptor(new HttpResponseInterceptor() {
+			  public void process(HttpResponse response, HttpContext context) {
+			    // Inflate any responses compressed with gzip
+			    final HttpEntity entity = response.getEntity();
+			    final Header encoding = entity.getContentEncoding();
+			    if (encoding != null) {
+			      for (HeaderElement element : encoding.getElements()) {
+			        if (element.getName().equalsIgnoreCase(ENCODING_GZIP)) {
+			          response.setEntity(new InflatingEntity(response.getEntity()));
+			          break;
+			        }
+			      }
+			    }
+			  }
+			});
+		
+	}
+	
 	
 	private boolean Login() {
 		HttpPost post = new HttpPost(URL_LOGIN);
@@ -78,7 +115,9 @@ public class SyncController implements Runnable {
 			if (head != null) {
 				String location = head.getValue();
 				if (location != null)
-					return location.endsWith("Login OK") || location.endsWith("Success");
+					return location.endsWith("Login OK") ||
+                           location.endsWith("Login%20OK") ||
+                           location.endsWith("Success");
 			}
 		} catch (ClientProtocolException e) {
 		} catch (IOException e) {

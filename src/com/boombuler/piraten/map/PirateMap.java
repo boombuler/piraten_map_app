@@ -17,6 +17,7 @@ import android.view.MenuItem.OnMenuItemClickListener;
 
 public class PirateMap extends MapActivity {
 	private MapView mMapView;
+	private MyLocationOverlay mMyPosOverlay;
 	static int REQUEST_EDIT_PLAKAT = 1;
 	static int INITIAL_ZOOM = 16;
 	
@@ -90,18 +91,32 @@ public class PirateMap extends MapActivity {
 			dba.close();
 		}
 		
-		final MyLocationOverlay  myLocationOverlay = new MyLocationOverlay(PirateMap.this, mMapView);
-	    overlays.add(myLocationOverlay);
-        myLocationOverlay.enableCompass();
-        myLocationOverlay.enableMyLocation();
-        myLocationOverlay.runOnFirstFix(new Runnable() {
+		mMyPosOverlay = new MyLocationOverlay(PirateMap.this, mMapView);
+	    overlays.add(mMyPosOverlay);
+	    mMyPosOverlay.enableCompass();
+	    mMyPosOverlay.enableMyLocation();
+	    mMyPosOverlay.runOnFirstFix(new Runnable() {
             public void run() {
             	if (mMapView.getZoomLevel() < INITIAL_ZOOM)
             		mMapView.getController().setZoom(INITIAL_ZOOM);
-            	mMapView.getController().animateTo(myLocationOverlay.getMyLocation());
+            	mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
             }
         });
 		mMapView.invalidate();
+    }
+    
+    @Override
+    protected void onResume() {
+    	if (mMyPosOverlay != null && !mMyPosOverlay.isMyLocationEnabled())
+    		mMyPosOverlay.enableMyLocation();
+    	super.onResume();
+    }
+    
+    @Override
+    protected void onPause() {
+    	if (mMyPosOverlay != null)
+    		mMyPosOverlay.disableMyLocation();
+    	super.onPause();
     }
     
     private void StartSync() {
