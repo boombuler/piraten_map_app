@@ -30,6 +30,7 @@
         <item>Plakatwand der Gemeinde</item>
         <item>Plakat an der Plakatwand</item>
         <item>Plakat beschädigt</item>
+        <item>A0-Plakat steht</item>
     </string-array>
         <string name="settings">Einstellungen</string>
         <string name="settings_logindata">Login Daten</string>
