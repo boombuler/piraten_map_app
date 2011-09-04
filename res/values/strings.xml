@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Piraten Karte</string>
-    <string name="sync_login">Anmelden...</string>
     <string name="sync_cleardata">Lösche alte Daten...</string>
     <string name="sync_loading">Lade Plakate...</string>
-    <string name="sync_logout">Abmelden...</string>
     <string name="sync_processing">Verabeite Daten...</string>
     <string name="sync_sending">Sende Änderungen...</string>
     
@@ -42,5 +40,5 @@
         <string name="settings_accuracy_summary">Gibt an wie genau die aktuelle Position ermittelt werden soll, bevor ein Plakat eingetragen wird.</string>
         
         <string name="alert_error">Fehler</string>
-        <string name="error_login_failed">Login fehlgeschlagen</string>
+        <string name="error_sync_failed">Datenabgleich fehlgeschlagen</string>
 </resources>

@@ -7,11 +7,10 @@
     		  android:layout_height="wrap_content" android:text="@string/marker_kind"></TextView>
     <Spinner android:layout_height="wrap_content" 
     		 android:layout_below="@id/textView1" android:id="@+id/spMarkerType" android:layout_width="fill_parent" android:prompt="@string/choose_marker"></Spinner>
-    <TextView android:id="@+id/textView2" android:layout_height="wrap_content" android:layout_width="wrap_content" 
-     android:layout_alignParentLeft="true" android:layout_below="@+id/spMarkerType" android:text="@string/tvComment"></TextView>
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" 
+              android:layout_alignParentLeft="true" android:layout_below="@+id/spMarkerType" android:text="@string/tvComment"></TextView>
     <EditText android:layout_height="wrap_content" android:gravity="top"
-    
-    		  android:layout_below="@+id/textView2" android:layout_alignParentLeft="true" 
+			  android:layout_alignParentLeft="true" 
     		  android:layout_width="fill_parent" android:id="@+id/tvComment" android:layout_above="@+id/btSave" android:editable="false">
     </EditText>
     <Button android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_width="fill_parent" android:layout_alignParentRight="true" android:text="@string/btSave" android:id="@+id/btSave"></Button>
