@@ -41,6 +41,7 @@ public class SyncController implements Runnable {
 	
 	private static final String URL_SERVER = "http://piraten.boombuler.de/";	
 	private static final String URL_API = URL_SERVER + "api.php";
+	private static final int BATCH_SIZE = 100;
 	
 	private final DefaultHttpClient mClient;
 	private final String mUsername;
@@ -160,6 +161,10 @@ public class SyncController implements Runnable {
 		DBAdapter dba = new DBAdapter(mContext);
 		try {
 			dba.open();
+			dba.beginTransaction();
+			
+			int insertCount = 0;
+			
 			for(Plakat plakat : resp.getPlakateList()) {
 				int lon = (int)(plakat.getLon() * 1E6);
 				int lat = (int)(plakat.getLat() * 1E6);
@@ -169,8 +174,17 @@ public class SyncController implements Runnable {
 						lat, lon,type,
 						plakat.getLastModifiedUser(),
 						plakat.getComment());
+				insertCount++;
+				if (insertCount >= BATCH_SIZE) {
+					dba.setTransactionSuccessful();
+					dba.endTransaction();
+					dba.beginTransaction();
+					insertCount = 0;
+				}
 			}
+			dba.setTransactionSuccessful();
 		} finally {
+			dba.endTransaction();
 			dba.close();
 		}
 	}
