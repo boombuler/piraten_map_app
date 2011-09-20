@@ -222,4 +222,14 @@ public class DBAdapter {
 				crs.getString(idx_lastmod), crs.getString(idx_comment));
 	}
 
+	
+	public void beginTransaction() {
+		mDatabase.beginTransaction();
+	}
+	public void setTransactionSuccessful() {
+		mDatabase.setTransactionSuccessful();
+	}
+	public void endTransaction() {
+		mDatabase.endTransaction();
+	}
 }
