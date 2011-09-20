@@ -39,7 +39,6 @@ public class PirateMap extends MapActivity {
         
         mMapView = (MapView)findViewById(R.id.mapview);
         mMapView.setBuiltInZoomControls(true);
-        BuildMap();
     }
     
     @Override
@@ -81,16 +80,24 @@ public class PirateMap extends MapActivity {
     }
     
     private void BuildMap() {
-    	List<Overlay> overlays = mMapView.getOverlays();
+    	final List<Overlay> overlays = mMapView.getOverlays();
 		overlays.clear();
 		
-		DBAdapter dba = new DBAdapter(PirateMap.this);
-		try {
-			dba.open();
-			overlays.add(dba.getMapOverlay());
-		} finally {
-			dba.close();
-		}
+		new Thread(new Runnable() {
+			
+			public void run() {
+				DBAdapter dba = new DBAdapter(PirateMap.this);
+				try {
+					dba.open();
+					overlays.add(dba.getMapOverlay());
+				} finally {
+					dba.close();
+				}
+				
+			}
+		}).start();
+		
+		
 		
 		mMyPosOverlay = new MyLocationOverlay(PirateMap.this, mMapView);
 	    overlays.add(mMyPosOverlay);
@@ -108,6 +115,8 @@ public class PirateMap extends MapActivity {
     
     @Override
     protected void onResume() {
+    	if (mMyPosOverlay == null)
+    		BuildMap();
     	if (mMyPosOverlay != null && !mMyPosOverlay.isMyLocationEnabled())
     		mMyPosOverlay.enableMyLocation();
     	super.onResume();
