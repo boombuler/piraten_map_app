@@ -4,6 +4,7 @@
     android:orientation="horizontal"
     android:paddingTop="2dip"
     android:paddingBottom="2dip" 
+    android:paddingLeft="2dip"
     android:gravity="left" android:layout_width="fill_parent">
     <ImageView android:id="@+id/imageView" 
         android:layout_width="wrap_content"
@@ -17,7 +18,7 @@
         android:layout_marginLeft="10dip"
         android:layout_marginTop="2dip"
         android:layout_marginBottom="2dip"
-        android:textColor="#000"
+        android:textColor="@color/marker_select_font"
         android:text="ABC" android:layout_gravity="center_vertical"/>
 
     </LinearLayout>

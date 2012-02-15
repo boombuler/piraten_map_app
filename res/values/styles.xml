@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="MapAppTheme" parent="@android:style/Theme.Black" />
+	<color name="marker_select_font">#000</color>
+</resources>

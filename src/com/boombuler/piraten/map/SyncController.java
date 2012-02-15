@@ -21,18 +21,27 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
 import com.boombuler.piraten.map.proto.Api.AddRequest;
+import com.boombuler.piraten.map.proto.Api.BoundingBox;
 import com.boombuler.piraten.map.proto.Api.ChangeRequest;
 import com.boombuler.piraten.map.proto.Api.DeleteRequest;
 import com.boombuler.piraten.map.proto.Api.Plakat;
 import com.boombuler.piraten.map.proto.Api.Request;
 import com.boombuler.piraten.map.proto.Api.Response;
+import com.boombuler.piraten.map.proto.Api.ViewRequest;
 import com.boombuler.piraten.utils.InflatingEntity;
 import com.google.android.maps.GeoPoint;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnDismissListener;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 public class SyncController implements Runnable {
@@ -49,6 +58,8 @@ public class SyncController implements Runnable {
 	private final PirateMap mContext;
 	private ProgressDialog mProgress;
 	private Runnable mOnCompleteListener;
+	private Location mLocation = null;
+	private double mSyncRange = 0;
 	
 	public SyncController(PirateMap context) {
 		mContext = context;
@@ -69,6 +80,7 @@ public class SyncController implements Runnable {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		mUsername = prefs.getString(SettingsActivity.KEY_USERNAME, "");
 		mPassword = prefs.getString(SettingsActivity.KEY_PASSWORD, "");
+		mSyncRange = Double.parseDouble(prefs.getString(SettingsActivity.KEY_SYNC_RANGE, "0"));
 	}
 	
 	private void ActivateGZipSupport() {
@@ -99,10 +111,44 @@ public class SyncController implements Runnable {
 		
 	}
 	
+	private double checkBoundsLatitude(double value) {
+		value = Math.max(value, -90);
+		return Math.min(value, +90);
+	}
+	
+	private double checkBoundsLongitude(double value) {
+		while (value < -180 || value > 180) {
+			if (value < -180)
+				value += 360;
+			if (value > 180)
+				value -= 360;
+		}
+		return value;
+	}
+	
+	private BoundingBox.Builder getBoundingBox() {
+		BoundingBox.Builder bbox = BoundingBox.newBuilder();
+		
+		double yDiff = mSyncRange / 111120f;
+		bbox.setNorth(checkBoundsLatitude(mLocation.getLatitude() + yDiff));
+		bbox.setSouth(checkBoundsLatitude(mLocation.getLatitude() - yDiff));
+		
+		double xDiff = yDiff / Math.cos(Math.toRadians(mLocation.getLatitude()));
+		
+		bbox.setWest(checkBoundsLongitude(mLocation.getLongitude() - xDiff));
+		bbox.setEast(checkBoundsLongitude(mLocation.getLongitude() + xDiff));
+		
+		return bbox;
+	}
+	
 	private boolean RunRequest() {
 		Request.Builder builder = Request.newBuilder()
 				.setUsername(mUsername).setPassword(mPassword);
-		
+		if (mLocation != null && mSyncRange > 0) { // Check for ViewBox
+			ViewRequest.Builder view = ViewRequest.newBuilder();
+			view.setViewBox(getBoundingBox());
+			builder.setViewRequest(view);
+		}
 		
 		ArrayList<PlakatOverlayItem> inserted = new ArrayList<PlakatOverlayItem>();
 		ArrayList<PlakatOverlayItem> changed = new ArrayList<PlakatOverlayItem>();
@@ -220,10 +266,6 @@ public class SyncController implements Runnable {
         
 		return result.build();
 	}
-	
-	public void setProgressDialog(ProgressDialog dialog) {
-		mProgress = dialog;
-	}
 
 	private void SetProgressText(int textid) {
 		final String txt = mContext.getString(textid);
@@ -295,4 +337,75 @@ public class SyncController implements Runnable {
 			
 		}
 	}
+
+	private void StartSync() {
+		
+		mProgress = new ProgressDialog(mContext);
+		mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		mProgress.setCancelable(false);
+		mProgress.setTitle(R.string.menu_sync);
+		mProgress.setOwnerActivity(mContext);
+
+        new Thread(this).start();
+	}
+	
+	public void synchronize() {
+		
+		if (mSyncRange <= 0) {
+			StartSync();
+			return;
+		}
+		
+		final ProgressDialog progressDlg = new ProgressDialog(mContext);
+
+		final LocationListener ll = new LocationListener() {
+			
+			public void onStatusChanged(String provider, int status, Bundle extras) {
+			}
+			
+			public void onProviderEnabled(String provider) {
+			}
+			
+			public void onProviderDisabled(String provider) {
+			}
+			
+			public void onLocationChanged(Location location) {
+				if (location.getAccuracy() <= 100) {
+					progressDlg.dismiss();
+					mLocation = location;
+					StartSync();
+				}
+			}
+		}; 
+		final LocationManager lm = (LocationManager)mContext.getSystemService(Context.LOCATION_SERVICE);
+		
+		
+		progressDlg.setOwnerActivity(mContext);
+		progressDlg.setCancelable(true);
+		progressDlg.setCanceledOnTouchOutside(false);
+		progressDlg.setIndeterminate(true);
+		progressDlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		progressDlg.setTitle(R.string.menu_sync);
+		progressDlg.setMessage(mContext.getString(R.string.get_position));
+		progressDlg.setButton(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				progressDlg.cancel();
+			}
+		});
+		progressDlg.setOnCancelListener(new OnCancelListener() {
+			public void onCancel(DialogInterface dialog) {
+				lm.removeUpdates(ll);				
+			}
+		});
+		progressDlg.setOnDismissListener(new OnDismissListener() {			
+			public void onDismiss(DialogInterface dialog) {
+				lm.removeUpdates(ll);
+			}
+		});
+		progressDlg.show();
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, ll);
+	}
+
+
 }

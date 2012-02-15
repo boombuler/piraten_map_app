@@ -3,9 +3,11 @@
 	android:title="@string/settings">
 	<PreferenceCategory android:title="@string/settings_logindata">
 		<EditTextPreference android:key="username"
-			android:title="@string/settings_username"></EditTextPreference>
+			android:title="@string/settings_username" 
+			android:summary="@string/settings_username_summary" />
 		<EditTextPreference android:key="password"
-			android:title="@string/settings_password" android:password="true"></EditTextPreference>
+			android:title="@string/settings_password" android:password="true"
+			android:summary="@string/settings_password_summary"/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/behavior">
 		<com.boombuler.piraten.map.AccuracyPreference
@@ -14,7 +16,13 @@
 			android:title="@string/settings_accuracy" 
 			android:key="accuracy" 
 			android:defaultValue="60"/>
-
+		<ListPreference 
+		    android:key="sync_range"
+		    android:title="@string/setting_load_range"
+		    android:summary="@string/setting_load_range_summary"
+		    android:entries="@array/sync_range_titles"
+		    android:entryValues="@array/sync_range"
+		    android:defaultValue="50000"/>
 	</PreferenceCategory>
 
 </PreferenceScreen>

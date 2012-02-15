@@ -1,6 +1,7 @@
 package com.boombuler.piraten.map;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -12,12 +13,13 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -116,6 +118,7 @@ public class PlakatDetailsActivity extends Activity
 	public static final String EXTRA_NEW_PLAKAT = "com.boombuler.piraten.map.EXTRA_NEW_PLAKAT";
 	
 	private Button mSaveButton;
+	private MenuItem mSaveItem;
 	private Spinner mMarkerTypeSpinner;
 	private EditText mComment;
 	
@@ -137,10 +140,15 @@ public class PlakatDetailsActivity extends Activity
 		setContentView(R.layout.details);
 		
 		mSaveButton = (Button)findViewById(R.id.btSave);
-		mSaveButton.setOnClickListener(this);
+		if (mSaveButton != null)
+			mSaveButton.setOnClickListener(this);
 		
 		mMarkerTypeSpinner = (Spinner)findViewById(R.id.spMarkerType);
 		mMarkerTypeSpinner.setAdapter(new MarkerTypeAdapter());
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 		
 		mComment = (EditText)findViewById(R.id.tvComment);
 		
@@ -165,35 +173,71 @@ public class PlakatDetailsActivity extends Activity
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		if (!mIsNew) {
-			MenuItem mi = menu.add(R.string.menu_delete).setIcon(android.R.drawable.ic_menu_delete);
-			mi.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-				public boolean onMenuItemClick(MenuItem item) {
-					DBAdapter adapter = new DBAdapter(PlakatDetailsActivity.this);
-					try {
-						adapter.open();
-						adapter.delete(mId);
-					} finally {
-						adapter.close();
-					}
-					
-					PlakatDetailsActivity.this.setResult(RESULT_OK);
-					PlakatDetailsActivity.this.finish();
-					return true;
-				}
-			});
-			return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.plakate_details, menu);
+		menu.findItem(R.id.menu_delete).setVisible(!mIsNew);
+		
+		mSaveItem = menu.findItem(R.id.menu_accept).setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB);
+		return true;
+	}
+	
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch (item.getItemId()) {
+			case R.id.menu_delete:
+				Delete();
+				return true;
+			case R.id.menu_accept:
+				Save();
+				return true;
 		}
-		return false;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			if (item.getItemId() == android.R.id.home)
+				this.finish();
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 
-	public void onClick(View v) {
-		if (v == mSaveButton) {
+	private void Delete() {
+		final AlertDialog.Builder ab = new AlertDialog.Builder(this);
+		ab.setTitle(R.string.menu_delete);
+		ab.setMessage(R.string.ask_marker_delete);
+		ab.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				DBAdapter adapter = new DBAdapter(PlakatDetailsActivity.this);
+				try {
+					adapter.open();
+					adapter.delete(mId);
+				} finally {
+					adapter.close();
+				}
+				
+				PlakatDetailsActivity.this.setResult(RESULT_OK);
+				PlakatDetailsActivity.this.finish();
+			}
+		});
+		ab.setNegativeButton(android.R.string.no, null);
+		ab.show();
+	}
+	
+	private void Save() {
+		if (mSaveButton != null)
 			mSaveButton.setEnabled(false);
-			if (mIsNew)
-				Insert();
-			else
-				Update();
+		mSaveItem.setEnabled(false);
+		if (mIsNew)
+			Insert();
+		else
+			Update();
+	}
+	
+	public void onClick(View v) {
+		if (v == null)
+			return;
+		if (v == mSaveButton) {
+			Save();
 		}
 	}
 
@@ -245,7 +289,9 @@ public class PlakatDetailsActivity extends Activity
 			
 			public void onCancel(DialogInterface dialog) {
 				lm.removeUpdates(ll);
-				mSaveButton.setEnabled(true);				
+				if (mSaveButton != null)
+					mSaveButton.setEnabled(true);
+				mSaveItem.setEnabled(true);
 			}
 		});
 		mProgressDlg.setOnDismissListener(new OnDismissListener() {			

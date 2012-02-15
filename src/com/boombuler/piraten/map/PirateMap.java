@@ -2,22 +2,21 @@ package com.boombuler.piraten.map;
 
 import java.util.List;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 
 public class PirateMap extends MapActivity {
 	private MapView mMapView;
-	private MyLocationOverlay mMyPosOverlay;
+	private CurrentPositionOverlay mMyPosOverlay;
 	static int REQUEST_EDIT_PLAKAT = 1;
 	static int INITIAL_ZOOM = 16;
 	
@@ -49,34 +48,40 @@ public class PirateMap extends MapActivity {
     }
     
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-    	super.onCreateOptionsMenu(menu);
-    	menu.add(R.string.menu_sync).setIcon(R.drawable.ic_menu_refresh)
-    	    .setOnMenuItemClickListener(new OnMenuItemClickListener() {
-				public boolean onMenuItemClick(MenuItem item) {
-					StartSync();
-					return true;
-				}
-			});
-    	menu.add(R.string.menu_add).setIcon(android.R.drawable.ic_menu_add)
-	    .setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			public boolean onMenuItemClick(MenuItem item) {
-				startActivityForResult(
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_sync:
+            	StartSync();
+                return true;
+            case R.id.menu_add:
+            	startActivityForResult(
 		    			new Intent(PirateMap.this, PlakatDetailsActivity.class)
 		    				.putExtra(PlakatDetailsActivity.EXTRA_NEW_PLAKAT, true),
 		    				PirateMap.REQUEST_EDIT_PLAKAT);
 				return true;
-			}
-		});
-    	menu.add(R.string.settings).setIcon(android.R.drawable.ic_menu_preferences)
-    	.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			
-			public boolean onMenuItemClick(MenuItem item) {
-				startActivity(new Intent(PirateMap.this, SettingsActivity.class));
+            case R.id.menu_settings:
+            	startActivity(new Intent(PirateMap.this, SettingsActivity.class));
 				return true;
-			}
-		});
-    	return true;
+            case android.R.id.home:
+            	if (mMapView != null && mMyPosOverlay != null) {
+            		GeoPoint location = mMyPosOverlay.getMyLocation();
+            		if (location != null) {
+            			mMapView.getController().animateTo(location);
+            		}
+	            	return true;
+            	}
+            	return false;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.plakate_map, menu);
+    	
+        return true;
     }
     
     private void BuildMap() {
@@ -97,19 +102,19 @@ public class PirateMap extends MapActivity {
 			}
 		}).start();
 		
-		
-		
-		mMyPosOverlay = new MyLocationOverlay(PirateMap.this, mMapView);
+		if (mMyPosOverlay == null) {
+			mMyPosOverlay = new CurrentPositionOverlay(this, mMapView);
+		    
+			mMyPosOverlay.runOnFirstFix(new Runnable() {
+	            public void run() {
+	            	if (mMapView.getZoomLevel() < INITIAL_ZOOM)
+	            		mMapView.getController().setZoom(INITIAL_ZOOM);
+	            	mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
+	            }
+	        });
+			mMyPosOverlay.enable();
+    	}
 	    overlays.add(mMyPosOverlay);
-	    mMyPosOverlay.enableCompass();
-	    mMyPosOverlay.enableMyLocation();
-	    mMyPosOverlay.runOnFirstFix(new Runnable() {
-            public void run() {
-            	if (mMapView.getZoomLevel() < INITIAL_ZOOM)
-            		mMapView.getController().setZoom(INITIAL_ZOOM);
-            	mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
-            }
-        });
 		mMapView.invalidate();
     }
     
@@ -117,33 +122,27 @@ public class PirateMap extends MapActivity {
     protected void onResume() {
     	if (mMyPosOverlay == null)
     		BuildMap();
-    	if (mMyPosOverlay != null && !mMyPosOverlay.isMyLocationEnabled())
-    		mMyPosOverlay.enableMyLocation();
+    	if (mMyPosOverlay != null)
+    		mMyPosOverlay.enable();
     	super.onResume();
     }
     
     @Override
     protected void onPause() {
     	if (mMyPosOverlay != null)
-    		mMyPosOverlay.disableMyLocation();
+    		mMyPosOverlay.disable();
     	super.onPause();
     }
     
     private void StartSync() {
         SyncController sc = new SyncController(this);
         
-        ProgressDialog pd = new ProgressDialog(this);
-        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pd.setCancelable(false);
-        pd.setTitle(R.string.menu_sync);
-        pd.setOwnerActivity(this);
-        sc.setProgressDialog(pd);
         sc.setOnCompleteListener(new Runnable() {			
 			public void run() {
 				BuildMap();
 			}
 		});
-        new Thread(sc).start();
+        sc.synchronize();
     }
 
 	@Override

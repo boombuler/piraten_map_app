@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <TextView android:id="@+id/textView1" android:layout_width="wrap_content" 
+    		  android:layout_height="wrap_content" android:text="@string/marker_kind"></TextView>
+    <Spinner android:layout_height="wrap_content" 
+    		 android:layout_below="@id/textView1" android:id="@+id/spMarkerType" android:layout_width="match_parent" android:prompt="@string/choose_marker"></Spinner>
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" 
+              android:layout_alignParentLeft="true" android:layout_below="@+id/spMarkerType" android:text="@string/tvComment" android:id="@+id/textView2"></TextView>
+    <EditText android:layout_height="match_parent" android:gravity="top"
+			  android:layout_alignParentLeft="true" 
+    		  android:layout_width="match_parent" android:id="@+id/tvComment" 
+    		  android:layout_above="@+id/btSave" android:editable="false" 
+    		  android:layout_below="@+id/textView2">
+    </EditText>
+</RelativeLayout>
