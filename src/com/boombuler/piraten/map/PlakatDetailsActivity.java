@@ -226,7 +226,8 @@ public class PlakatDetailsActivity extends Activity
 	private void Save() {
 		if (mSaveButton != null)
 			mSaveButton.setEnabled(false);
-		mSaveItem.setEnabled(false);
+		if (mSaveItem != null)
+			mSaveItem.setEnabled(false);
 		if (mIsNew)
 			Insert();
 		else
@@ -291,7 +292,8 @@ public class PlakatDetailsActivity extends Activity
 				lm.removeUpdates(ll);
 				if (mSaveButton != null)
 					mSaveButton.setEnabled(true);
-				mSaveItem.setEnabled(true);
+				if (mSaveItem != null)
+					mSaveItem.setEnabled(true);
 			}
 		});
 		mProgressDlg.setOnDismissListener(new OnDismissListener() {			
