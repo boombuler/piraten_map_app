@@ -43,13 +43,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class SyncController implements Runnable {
+	private static final String TAG = "boombuler.synccontroller";
 	private static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
 	private static final String ENCODING_GZIP = "gzip";
-	
-	private static final String URL_SERVER = "http://piraten.boombuler.de/";	
-	private static final String URL_API = URL_SERVER + "api.php";
+		
+	private final String mAPIUrl;
 	private static final int BATCH_SIZE = 100;
 	
 	private final DefaultHttpClient mClient;
@@ -81,6 +82,8 @@ public class SyncController implements Runnable {
 		mUsername = prefs.getString(SettingsActivity.KEY_USERNAME, "");
 		mPassword = prefs.getString(SettingsActivity.KEY_PASSWORD, "");
 		mSyncRange = Double.parseDouble(prefs.getString(SettingsActivity.KEY_SYNC_RANGE, "0"));
+		mAPIUrl = prefs.getString(SettingsActivity.KEY_SERVER, mContext.getString(R.string.default_server)) + "api.php";
+		Log.d(TAG, "using server: "+mAPIUrl);
 	}
 	
 	private void ActivateGZipSupport() {
@@ -173,13 +176,14 @@ public class SyncController implements Runnable {
 		
 		Request request = builder.build();
 		
-		HttpPost post = new HttpPost(URL_API);
+		HttpPost post = new HttpPost(mAPIUrl);
 		
 		post.setEntity(new ByteArrayEntity(request.toByteArray()));
 		
 		try {
 			HttpResponse rp = mClient.execute(post);
 			byte[] res = EntityUtils.toByteArray(rp.getEntity());
+
 			Response response = Response.parseFrom(res);
 			
 			int addedCnt = response.hasAddedCount() ? response.getAddedCount() : 0;

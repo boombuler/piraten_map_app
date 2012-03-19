@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Piraten Karte</string>
-    <string name="sync_cleardata">Lösche alte Daten...</string>
-    <string name="sync_loading">Lade Plakate...</string>
-    <string name="sync_processing">Verabeite Daten...</string>
-    <string name="sync_sending">Sende Änderungen...</string>
+    <string name="sync_cleardata">Lösche alte Daten&#8230;</string>
+    <string name="sync_loading">Lade Plakate&#8230;</string>
+    <string name="sync_processing">Verabeite Daten&#8230;</string>
+    <string name="sync_sending">Sende Änderungen&#8230;</string>
     
     <string name="menu_sync">Datenabgleich</string>
     <string name="menu_add">Marker setzten</string>
@@ -42,6 +42,8 @@
         <string name="settings_accuracy_meters">: %.2f Meter</string>
         <string name="settings_accuracy_summary">Gibt an wie genau die aktuelle Position ermittelt werden soll, bevor ein Plakat eingetragen wird.</string>
         
+        <string name="setting_server">Server</string>
+        <string name="setting_server_summary">Gibt an welcher Server für den Datenabgleich verwendet wird.</string>
         <string name="setting_load_range">Datenabgleich</string>
         <string name="setting_load_range_summary">Gibt an in welchen Umkreis die Plakate geladen werden sollen.</string>
         <string-array name="sync_range_titles">
@@ -59,6 +61,16 @@
             <item>0</item>
         </string-array>
         
+        <string name="default_server">http://piraten.boombuler.de/</string>
+        <string-array name="sync_server_titles">
+            <item>Niedersachsen (Test Server)</item>
+            <item>Nordrhein-Westfalen (Aachen)</item>
+        </string-array>
+        <string-array name="sync_server">
+            <item>http://piraten.boombuler.de/</item>
+            <item>http://pk.piraten-aachen.de/</item>
+        </string-array>
+        <string name="ask_server_change">Wenn der Server geändert wird, werden alle nicht gesendeten Daten verworfen.</string>
         <string name="alert_error">Fehler</string>
         <string name="error_sync_failed">Datenabgleich fehlgeschlagen</string>
 </resources>
