@@ -9,6 +9,9 @@
 		    android:entries="@array/sync_server_titles"
 		    android:entryValues="@array/sync_server"
 		    android:defaultValue="@string/default_server"/>
+        <Preference android:key="about_server"
+            android:title="@string/about_server"
+            android:summary="@string/about_server_summary" />
 		<EditTextPreference android:key="username"
 			android:title="@string/settings_username" 
 			android:summary="@string/settings_username_summary" />

@@ -34,9 +34,9 @@
         <string name="settings">Einstellungen</string>
         <string name="settings_logindata">Login Daten</string>
         <string name="settings_username">Benutzername</string>
-        <string name="settings_username_summary">Piraten-Wiki Benutzer</string>
+        <string name="settings_username_summary"></string>
         <string name="settings_password">Passwort</string>
-        <string name="settings_password_summary">Piraten-Wiki Passwort</string>
+        <string name="settings_password_summary"></string>
         <string name="behavior">Verhalten</string>    
         <string name="settings_accuracy">Minimale Genauigkeit</string>
         <string name="settings_accuracy_meters">: %.2f Meter</string>
@@ -61,15 +61,26 @@
             <item>0</item>
         </string-array>
         
-        <string name="default_server">http://piraten.boombuler.de/</string>
+        <string name="default_server">https://plakate.piraten-nds.de/</string>
         <string-array name="sync_server_titles">
-            <item>Niedersachsen (Test Server)</item>
+            <item>Niedersachsen</item>
             <item>Nordrhein-Westfalen (Aachen)</item>
+            <item>Niedersachsen (Test Server)</item>
         </string-array>
         <string-array name="sync_server">
-            <item>http://piraten.boombuler.de/</item>
+            <item>https://plakate.piraten-nds.de/</item>
             <item>http://pk.piraten-aachen.de/</item>
+            <item>http://piraten.boombuler.de/</item>
         </string-array>
+        <string-array name="server_infos">
+            <item>Server für Niedersachsen. Als Login bitte euer Wiki Login benutzten oder &lt;a href=&quot;http://plakate.piraten-nds.de/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für NRW. Weitere Informationen im &lt;a href=&quot;http://wiki.piratenpartei.de/Plakatkarte_NRW&quot;&gt;Wiki&lt;/a&gt;.&lt;br/&gt;Ansprechpartner: Upuetz, boupirac</item>
+            <item>Test- und Entwicklerserver</item>
+        </string-array>
+        
+        <string name="about_server">Server Info</string>
+        <string name="about_server_summary">Zeigt Informationen über den aktuell gewählten Server</string>
+        
         <string name="ask_server_change">Wenn der Server geändert wird, werden alle nicht gesendeten Daten verworfen.</string>
         <string name="alert_error">Fehler</string>
         <string name="error_sync_failed">Datenabgleich fehlgeschlagen</string>

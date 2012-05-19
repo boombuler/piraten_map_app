@@ -1,23 +1,13 @@
 package com.boombuler.piraten.map;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseInterceptor;
-import org.apache.http.ProtocolException;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.RedirectHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
 import com.boombuler.piraten.map.proto.Api.AddRequest;
@@ -28,7 +18,7 @@ import com.boombuler.piraten.map.proto.Api.Plakat;
 import com.boombuler.piraten.map.proto.Api.Request;
 import com.boombuler.piraten.map.proto.Api.Response;
 import com.boombuler.piraten.map.proto.Api.ViewRequest;
-import com.boombuler.piraten.utils.InflatingEntity;
+import com.boombuler.piraten.utils.MyHttpClient;
 import com.google.android.maps.GeoPoint;
 
 import android.app.AlertDialog;
@@ -47,8 +37,7 @@ import android.util.Log;
 
 public class SyncController implements Runnable {
 	private static final String TAG = "boombuler.synccontroller";
-	private static final String HEADER_ACCEPT_ENCODING = "Accept-Encoding";
-	private static final String ENCODING_GZIP = "gzip";
+	
 		
 	private final String mAPIUrl;
 	private static final int BATCH_SIZE = 100;
@@ -64,20 +53,7 @@ public class SyncController implements Runnable {
 	
 	public SyncController(PirateMap context) {
 		mContext = context;
-		mClient = new DefaultHttpClient();
-		// Prevent redirection:
-		mClient.setRedirectHandler(new RedirectHandler() {
-			public boolean isRedirectRequested(HttpResponse response,
-					HttpContext context) {
-				return false;
-			}
-			
-			public URI getLocationURI(HttpResponse response, HttpContext context)
-					throws ProtocolException {
-				return null;
-			}
-		});
-		ActivateGZipSupport();
+		mClient = new MyHttpClient(context);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		mUsername = prefs.getString(SettingsActivity.KEY_USERNAME, "");
 		mPassword = prefs.getString(SettingsActivity.KEY_PASSWORD, "");
@@ -86,33 +62,7 @@ public class SyncController implements Runnable {
 		Log.d(TAG, "using server: "+mAPIUrl);
 	}
 	
-	private void ActivateGZipSupport() {
-		mClient.addRequestInterceptor(new HttpRequestInterceptor() {
-			  public void process(HttpRequest request, HttpContext context) {
-			    // Add header to accept gzip content
-			    if (!request.containsHeader(HEADER_ACCEPT_ENCODING)) {
-			      request.addHeader(HEADER_ACCEPT_ENCODING, ENCODING_GZIP);
-			    }
-			  }
-			});
-
-			mClient.addResponseInterceptor(new HttpResponseInterceptor() {
-			  public void process(HttpResponse response, HttpContext context) {
-			    // Inflate any responses compressed with gzip
-			    final HttpEntity entity = response.getEntity();
-			    final Header encoding = entity.getContentEncoding();
-			    if (encoding != null) {
-			      for (HeaderElement element : encoding.getElements()) {
-			        if (element.getName().equalsIgnoreCase(ENCODING_GZIP)) {
-			          response.setEntity(new InflatingEntity(response.getEntity()));
-			          break;
-			        }
-			      }
-			    }
-			  }
-			});
-		
-	}
+	
 	
 	private double checkBoundsLatitude(double value) {
 		value = Math.max(value, -90);
