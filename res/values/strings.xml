@@ -73,7 +73,7 @@
             <item>http://piraten.boombuler.de/</item>
         </string-array>
         <string-array name="server_infos">
-            <item>Server für Niedersachsen. Als Login bitte euer Wiki Login benutzten oder &lt;a href=&quot;http://plakate.piraten-nds.de/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für Niedersachsen. &lt;a href=&quot;http://plakate.piraten-nds.de/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
             <item>Server für NRW. Weitere Informationen im &lt;a href=&quot;http://wiki.piratenpartei.de/Plakatkarte_NRW&quot;&gt;Wiki&lt;/a&gt;.&lt;br/&gt;Ansprechpartner: Upuetz, boupirac</item>
             <item>Test- und Entwicklerserver</item>
         </string-array>

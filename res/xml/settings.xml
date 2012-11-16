@@ -22,17 +22,17 @@
 	<PreferenceCategory android:title="@string/behavior">
 		<com.boombuler.piraten.map.AccuracyPreference
 			android:summary="@string/settings_accuracy_summary"  
-			android:max="100" 
+			android:max="200" 
 			android:title="@string/settings_accuracy" 
 			android:key="accuracy" 
-			android:defaultValue="60"/>
+			android:defaultValue="100"/>
 		<ListPreference 
 		    android:key="sync_range"
 		    android:title="@string/setting_load_range"
 		    android:summary="@string/setting_load_range_summary"
 		    android:entries="@array/sync_range_titles"
 		    android:entryValues="@array/sync_range"
-		    android:defaultValue="50000"/>
+		    android:defaultValue="20000"/>
 	</PreferenceCategory>
 
 </PreferenceScreen>
