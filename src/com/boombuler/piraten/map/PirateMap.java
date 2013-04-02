@@ -2,6 +2,8 @@ package com.boombuler.piraten.map;
 
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
@@ -13,6 +15,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class PirateMap extends MapActivity {
 	private MapView mMapView;
@@ -54,10 +58,7 @@ public class PirateMap extends MapActivity {
             	StartSync();
                 return true;
             case R.id.menu_add:
-            	startActivityForResult(
-		    			new Intent(PirateMap.this, PlakatDetailsActivity.class)
-		    				.putExtra(PlakatDetailsActivity.EXTRA_NEW_PLAKAT, true),
-		    				PirateMap.REQUEST_EDIT_PLAKAT);
+            	AddMarker();
 				return true;
             case R.id.menu_settings:
             	startActivity(new Intent(PirateMap.this, SettingsActivity.class));
@@ -133,15 +134,41 @@ public class PirateMap extends MapActivity {
     		mMyPosOverlay.disable();
     	super.onPause();
     }
+
+    private void AddMarker() {
+        boolean hasSyncedBefore = PreferenceManager.getDefaultSharedPreferences(this)
+                                                   .getBoolean(SettingsActivity.KEY_HAS_SYNCED, false);
+        if (!hasSyncedBefore) {
+            new AlertDialog.Builder(this)
+                    .setTitle(android.R.string.dialog_alert_title)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setMessage(R.string.warn_sync_first)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+        } else {
+            startActivityForResult(
+                    new Intent(PirateMap.this, PlakatDetailsActivity.class)
+                            .putExtra(PlakatDetailsActivity.EXTRA_NEW_PLAKAT, true),
+                    PirateMap.REQUEST_EDIT_PLAKAT);
+        }
+    }
     
     private void StartSync() {
         SyncController sc = new SyncController(this);
         
-        sc.setOnCompleteListener(new Runnable() {			
-			public void run() {
-				BuildMap();
-			}
-		});
+        sc.setOnCompleteListener(new Runnable() {
+            public void run() {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(PirateMap.this);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean(SettingsActivity.KEY_HAS_SYNCED, true);
+                editor.apply();
+                BuildMap();
+            }
+        });
         sc.synchronize();
     }
 

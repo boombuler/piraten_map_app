@@ -65,16 +65,22 @@
         <string-array name="sync_server_titles">
             <item>Niedersachsen</item>
             <item>Nordrhein-Westfalen (Aachen)</item>
+            <item>Unterfranken</item>
+            <item>KV Rendsburg-Eckernförde</item>
             <item>Niedersachsen (Test Server)</item>
         </string-array>
         <string-array name="sync_server">
             <item>https://plakate.piraten-nds.de/</item>
             <item>http://pk.piraten-aachen.de/</item>
+            <item>https://www.piraten-ufr.de/plakate/</item>
+            <item>http://plakate.eckrd.de/</item>
             <item>http://piraten.boombuler.de/</item>
         </string-array>
         <string-array name="server_infos">
-            <item>Server für Niedersachsen. Als Login bitte euer Wiki Login benutzten oder &lt;a href=&quot;http://plakate.piraten-nds.de/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für Niedersachsen. Zum Anmelden &lt;a href=&quot;http://plakate.piraten-nds.de/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
             <item>Server für NRW. Weitere Informationen im &lt;a href=&quot;http://wiki.piratenpartei.de/Plakatkarte_NRW&quot;&gt;Wiki&lt;/a&gt;.&lt;br/&gt;Ansprechpartner: Upuetz, boupirac</item>
+            <item>Server für Unterfranken. Zum Anmelden &lt;a href=&quot;https://www.piraten-ufr.de/plakate/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.&lt;br/&gt;Ansprechpartner: SuVuK</item>
+            <item>Server für den KV Rendsburg-Eckernförde. Zum Anmelden &lt;a href=&quot;http://plakate.eckrd.de/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.&lt;br/&gt;Ansprechpartner: @kaymar_de</item>
             <item>Test- und Entwicklerserver</item>
         </string-array>
         
@@ -84,4 +90,6 @@
         <string name="ask_server_change">Wenn der Server geändert wird, werden alle nicht gesendeten Daten verworfen.</string>
         <string name="alert_error">Fehler</string>
         <string name="error_sync_failed">Datenabgleich fehlgeschlagen</string>
+
+        <string name="warn_sync_first">Bevor Sie ein Plakat hinzufügen, wählen Sie bitte einen Server in den Einstellungen aus und synchronisieren sie die Daten.</string>
 </resources>

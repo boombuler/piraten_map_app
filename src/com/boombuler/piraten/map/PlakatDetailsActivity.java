@@ -246,7 +246,10 @@ public class PlakatDetailsActivity extends Activity
 		DBAdapter adapter = new DBAdapter(this);
 		try {			
 			adapter.open();
-			adapter.Update(mId, mMarkerTypeSpinner.getSelectedItemPosition());
+
+            String comment = mComment.getText().toString();
+
+			adapter.Update(mId, mMarkerTypeSpinner.getSelectedItemPosition(), comment);
 		} finally {
 			adapter.close();
 		}
@@ -302,8 +305,10 @@ public class PlakatDetailsActivity extends Activity
 			}
 		});
 		mProgressDlg.show();
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, ll);
+        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
+		    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+        if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+		    lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, ll);
 	}
 	
 	private void CompleteInsert(Location loc) {
@@ -315,7 +320,8 @@ public class PlakatDetailsActivity extends Activity
 				adapter.InsertNew( 
 						(int)(loc.getLatitude() * 1E6), 
 						(int)(loc.getLongitude() * 1E6), 
-						mMarkerTypeSpinner.getSelectedItemPosition());
+						mMarkerTypeSpinner.getSelectedItemPosition(),
+                        mComment.getText().toString());
 			} finally {
 				adapter.close();
 			}

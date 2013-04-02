@@ -24,6 +24,7 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	public static final String KEY_ACCURACY = "accuracy";
 	public static final String KEY_SYNC_RANGE = "sync_range";
 	public static final String KEY_SERVER = "sync_server";
+    public static final  String KEY_HAS_SYNCED = "has_synced_before";
 	private static final String KEY_ABOUT_SERVER = "about_server";
 	
 	private ListPreference mServerPref;
@@ -69,13 +70,14 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 			public void onClick(DialogInterface dialog, int which) {
 				
 				SharedPreferences.Editor edit = prefs.edit();
+                edit.putBoolean(KEY_HAS_SYNCED, false);
 				edit.putString(KEY_SERVER, nv);
 				DBAdapter dba = new DBAdapter(SettingsActivity.this);
 				try {
 					dba.open();
 					dba.ClearAllData();
 				} finally {
-					dba.close();
+                    dba.close();
 				}
 				((ListPreference)pref).setValue(nv);
 				edit.commit();

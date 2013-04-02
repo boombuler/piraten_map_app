@@ -62,9 +62,9 @@ public class DBAdapter {
 		}
 	}
 
-	public void InsertNew(int lat, int lon, int type) {
+	public void InsertNew(int lat, int lon, int type, String comment) {
 		int newId = getNextId();
-		Insert(newId, lat, lon, type, null, null);
+		Insert(newId, lat, lon, type, null, comment);
 		try {
 			ContentValues values = new ContentValues();
 			values.put(CHANGES_ID, newId);
@@ -77,9 +77,11 @@ public class DBAdapter {
 
 	}
 
-	public void Update(int id, int newType) {
+	public void Update(int id, int newType, String comment) {
 		ContentValues cv = new ContentValues();
 		cv.put(PLAKATE_TYPE, newType);
+        if (comment != null)
+            cv.put(PLAKATE_COMMENT, comment);
 		mDatabase.update(TABLE_PLAKATE, cv, PLAKATE_ID + "=?",
 				new String[] { String.valueOf(id) });
 		try {

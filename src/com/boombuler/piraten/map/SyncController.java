@@ -209,6 +209,7 @@ public class SyncController implements Runnable {
         
         result.setLat(lat);
         result.setLon(lon);
+        result.setComment(item.getComment());
         return result.build();
 	}
 	
@@ -217,6 +218,7 @@ public class SyncController implements Runnable {
 		
 		result.setId(item.getId());
 		result.setType(item.getTypeStr());
+        result.setComment(item.getComment());
         
 		return result.build();
 	}
@@ -357,8 +359,10 @@ public class SyncController implements Runnable {
 			}
 		});
 		progressDlg.show();
-		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
-		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, ll);
+        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
+		    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
+        if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+		    lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, ll);
 	}
 
 

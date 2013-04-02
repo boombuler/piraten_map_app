@@ -12,7 +12,7 @@
     <EditText android:layout_height="wrap_content" android:gravity="top"
 			  android:layout_alignParentLeft="true" 
     		  android:layout_width="fill_parent" android:id="@+id/tvComment" 
-    		  android:layout_above="@+id/btSave" android:editable="false" 
+    		  android:layout_above="@+id/btSave" android:editable="true"
     		  android:layout_below="@+id/textView2">
     </EditText>
     <Button android:layout_height="wrap_content" android:layout_alignParentBottom="true" android:layout_width="fill_parent" android:layout_alignParentRight="true" android:text="@string/btSave" android:id="@+id/btSave"></Button>
