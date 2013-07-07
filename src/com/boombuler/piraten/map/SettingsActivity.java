@@ -31,7 +31,6 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.settings);
 		mServerPref = (ListPreference)findPreference(KEY_SERVER);

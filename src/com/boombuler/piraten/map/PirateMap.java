@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
@@ -165,7 +166,12 @@ public class PirateMap extends MapActivity {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(PirateMap.this);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean(SettingsActivity.KEY_HAS_SYNCED, true);
-                editor.apply();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                    editor.apply();
+                } else {
+                    editor.commit();
+                }
                 BuildMap();
             }
         });
