@@ -63,6 +63,22 @@
         
         <string name="default_server">https://plakate.piraten-nds.de/</string>
         <string-array name="sync_server_titles">
+            <item>BTW - Baden-Württemberg</item>
+            <item>BTW - Bayern</item>
+            <item>BTW - Berlin</item>
+            <item>BTW - Brandenburg</item>
+            <item>BTW - Bremen</item>
+            <item>BTW - Hamburg</item>
+            <item>BTW - Hessen</item>
+            <item>BTW - Mecklenburg-Vorpommern</item>
+            <item>BTW - Niedersachsen</item>
+            <item>BTW - Nordrhein-Westfalen</item>
+            <item>BTW - Rheinland-Pfalz</item>
+            <item>BTW - Saarland</item>
+            <item>BTW - Sachsen</item>
+            <item>BTW - Sachsen-Anhalt</item>
+            <item>BTW - Schleswig-Holstein</item>
+            <item>BTW - Thüringen</item>
             <item>Niedersachsen</item>
             <item>Nordrhein-Westfalen (Aachen)</item>
             <item>Unterfranken</item>
@@ -70,6 +86,22 @@
             <item>Niedersachsen (Test Server)</item>
         </string-array>
         <string-array name="sync_server">
+            <item>http://btw.piraten-thueringen.de/bw/</item>
+            <item>http://btw.piraten-thueringen.de/by/</item>
+            <item>http://btw.piraten-thueringen.de/be/</item>
+            <item>http://btw.piraten-thueringen.de/bb/</item>
+            <item>http://btw.piraten-thueringen.de/hb/</item>
+            <item>http://btw.piraten-thueringen.de/hh/</item>
+            <item>http://btw.piraten-thueringen.de/he/</item>
+            <item>http://btw.piraten-thueringen.de/mv/</item>
+            <item>http://btw.piraten-thueringen.de/ni/</item>
+            <item>http://btw.piraten-thueringen.de/nw/</item>
+            <item>http://btw.piraten-thueringen.de/rp/</item>
+            <item>http://btw.piraten-thueringen.de/sl/</item>
+            <item>http://btw.piraten-thueringen.de/sn/</item>
+            <item>http://btw.piraten-thueringen.de/st/</item>
+            <item>http://btw.piraten-thueringen.de/sh/</item>
+            <item>http://btw.piraten-thueringen.de/th/</item>
             <item>https://plakate.piraten-nds.de/</item>
             <item>http://pk.piraten-aachen.de/</item>
             <item>https://www.piraten-ufr.de/plakate/</item>
@@ -77,6 +109,22 @@
             <item>http://piraten.boombuler.de/</item>
         </string-array>
         <string-array name="server_infos">
+            <item>Server für die Bundestagswahl für Baden-Württemberg zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/bw/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Bayern zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/by/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Berlin zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/be/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Brandenburg zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/bb/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Bremen zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/hb/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Hamburg zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/hh/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Hessen zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/he/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Mecklenburg-Vorpommern zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/mv/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Niedersachsen zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/ni/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Nordrhein-Westfalen zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/nw/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Rheinland-Pfalz zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/rp/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Saarland zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/sl/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Sachsen zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/sn/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Sachsen-Anhalt zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/st/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Schleswig-Holstein zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/sh/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
+            <item>Server für die Bundestagswahl für Thüringen zum Einloggen entweder Wiki-Login benutzen oder &lt;a href=&quot;http://btw.piraten-thueringen.de/th/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
             <item>Server für Niedersachsen. Zum Anmelden &lt;a href=&quot;http://plakate.piraten-nds.de/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.</item>
             <item>Server für NRW. Weitere Informationen im &lt;a href=&quot;http://wiki.piratenpartei.de/Plakatkarte_NRW&quot;&gt;Wiki&lt;/a&gt;.&lt;br/&gt;Ansprechpartner: Upuetz, boupirac</item>
             <item>Server für Unterfranken. Zum Anmelden &lt;a href=&quot;https://www.piraten-ufr.de/plakate/&quot;&gt;hier&lt;/a&gt; einen Account erstellen.&lt;br/&gt;Ansprechpartner: SuVuK</item>
