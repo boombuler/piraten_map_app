@@ -58,7 +58,7 @@ public class SyncController implements Runnable {
 		mUsername = prefs.getString(SettingsActivity.KEY_USERNAME, "");
 		mPassword = prefs.getString(SettingsActivity.KEY_PASSWORD, "");
 		mSyncRange = Double.parseDouble(prefs.getString(SettingsActivity.KEY_SYNC_RANGE, "0"));
-		mAPIUrl = prefs.getString(SettingsActivity.KEY_SERVER, mContext.getString(R.string.default_server)) + "api.php";
+		mAPIUrl = prefs.getString(SettingsActivity.KEY_SERVER, "") + "api.php";
 		Log.d(TAG, "using server: "+mAPIUrl);
 	}
 	
@@ -152,7 +152,9 @@ public class SyncController implements Runnable {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	
+		} catch (Exception e) {
+            e.printStackTrace();
+        }
 		return false;
 	}
 

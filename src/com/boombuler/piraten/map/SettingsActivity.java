@@ -17,6 +17,8 @@ import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class SettingsActivity extends PreferenceActivity implements OnPreferenceChangeListener, OnPreferenceClickListener {
 
 	public static final String KEY_USERNAME = "username";
@@ -28,13 +30,40 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	private static final String KEY_ABOUT_SERVER = "about_server";
 	
 	private ListPreference mServerPref;
+    private List<ServerInfo> mServerList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.settings);
-		mServerPref = (ListPreference)findPreference(KEY_SERVER);
-		mServerPref.setOnPreferenceChangeListener(this);
+
+        addPreferencesFromResource(R.xml.settings);
+        mServerPref = (ListPreference)findPreference(KEY_SERVER);
+
+        FetchServerList.Load(this, new Runnable() {
+            @Override
+            public void run() {
+                DBAdapter dba = new DBAdapter(SettingsActivity.this);
+                dba.open();
+                try {
+                    mServerList = dba.GetServers(false);
+                }
+                finally {
+                    dba.close();
+                }
+
+                String[] serverNames = new String[mServerList.size()];
+                String[] serverURLs = new String[mServerList.size()];
+
+                for (int i = 0; i < mServerList.size(); i++) {
+                    serverNames[i] = mServerList.get(i).getName();
+                    serverURLs[i] = mServerList.get(i).getURL();
+                }
+                mServerPref.setEntries(serverNames);
+                mServerPref.setEntryValues(serverURLs);
+                mServerPref.setOnPreferenceChangeListener(SettingsActivity.this);
+            }
+        });
+
 		findPreference(KEY_ABOUT_SERVER).setOnPreferenceClickListener(this);
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -57,7 +86,7 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
         final Preference pref = preference;
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         
-        if (prefs.getString(KEY_SERVER, getString(R.string.default_server)).equals(nv))
+        if (prefs.getString(KEY_SERVER, "").equals(nv))
         	return false;
         
 		new AlertDialog.Builder(this)
@@ -93,13 +122,11 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 
 	private String getServerInfo() {
 		String serv = mServerPref.getValue();
-		String[] servers = getResources().getStringArray(R.array.sync_server);
-		String[] infos = getResources().getStringArray(R.array.server_infos);
-		for (int i = 0; i < servers.length; i++) {
-			if (servers[i].equals(serv)) {
-				return infos[i];
-			}
-		}
+        for (ServerInfo si : mServerList) {
+            if (si.getURL() == serv) {
+                return si.getInfo();
+            }
+        }
 		return null;
 	}
 	

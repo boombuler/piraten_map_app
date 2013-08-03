@@ -5,10 +5,7 @@
 		<ListPreference 
 		    android:key="sync_server"
 		    android:title="@string/setting_server"
-		    android:summary="@string/setting_server_summary"
-		    android:entries="@array/sync_server_titles"
-		    android:entryValues="@array/sync_server"
-		    android:defaultValue="@string/default_server"/>
+		    android:summary="@string/setting_server_summary"/>
         <Preference android:key="about_server"
             android:title="@string/about_server"
             android:summary="@string/about_server_summary" />

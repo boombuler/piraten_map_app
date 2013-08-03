@@ -29,6 +29,13 @@ public class DBAdapter {
 	public static final int CHANGE_TYPE_CHANGED = 2;
 	public static final int CHANGE_TYPE_DELETED = 3;
 
+    public static final String TABLE_SERVERS = "servers";
+    public static final String SERVERS_ID = "guid";
+    public static final String SERVERS_NAME = "name";
+    public static final String SERVERS_INFO = "info";
+    public static final String SERVERS_URL = "url";
+    public static final String SERVERS_DEV = "dev";
+
 	private SQLiteDatabase mDatabase;
 	private final Context mContext;
 	private final DatabaseHelper mDBHelper;
@@ -61,6 +68,47 @@ public class DBAdapter {
 			ex.printStackTrace();
 		}
 	}
+
+    public void ClearServers() {
+        mDatabase.delete(TABLE_SERVERS, null, null);
+    }
+
+    public void InsertServer(String id, String name, String info, String url) {
+        ContentValues cv = new ContentValues();
+        cv.put(SERVERS_ID, id);
+        cv.put(SERVERS_URL, url);
+        cv.put(SERVERS_INFO, info);
+        cv.put(SERVERS_NAME, name);
+        cv.put(SERVERS_DEV, 0);
+        mDatabase.insert(TABLE_SERVERS, null, cv);
+    }
+
+    public void SetDevServer(String id) {
+        ContentValues cv = new ContentValues();
+        cv.put(SERVERS_DEV, 1);
+        mDatabase.update(TABLE_SERVERS, cv, SERVERS_ID + "=?", new String[]{id});
+    }
+
+    public  List<ServerInfo> GetServers(boolean withDevServers) {
+        LinkedList<ServerInfo> items = new LinkedList<ServerInfo>();
+
+        Cursor crs = mDatabase.query(TABLE_SERVERS, null, null, null, null, null, null);
+        if (crs != null) {
+            try {
+                if (crs.moveToFirst()) {
+                    while (!crs.isAfterLast()) {
+                        ServerInfo server = new ServerInfo(crs);
+                        if (withDevServers || !server.isDevServer())
+                            items.add(server);
+                        crs.moveToNext();
+                    }
+                }
+            } finally {
+                crs.close();
+            }
+        }
+        return items;
+    }
 
 	public void InsertNew(int lat, int lon, int type, String comment) {
 		int newId = getNextId();
@@ -186,6 +234,8 @@ public class DBAdapter {
 			dataCount.close();
 		}
 	}
+
+
 
 	public PlakatOverlay getMapOverlay() {
 		if (mContext instanceof PirateMap) {
