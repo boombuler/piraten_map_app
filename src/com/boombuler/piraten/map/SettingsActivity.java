@@ -123,7 +123,7 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	private String getServerInfo() {
 		String serv = mServerPref.getValue();
         for (ServerInfo si : mServerList) {
-            if (si.getURL() == serv) {
+            if (si.getURL().equalsIgnoreCase(serv)) {
                 return si.getInfo();
             }
         }

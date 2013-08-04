@@ -2,13 +2,15 @@ package com.boombuler.piraten.map;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import com.boombuler.piraten.utils.JsonArray;
+import com.boombuler.piraten.utils.JsonObject;
 import com.boombuler.piraten.utils.MyHttpClient;
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
-import com.eclipsesource.json.JsonValue;
+import com.boombuler.piraten.utils.JsonParser;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
+
+import java.util.HashMap;
 
 
 public class FetchServerList implements Runnable {
@@ -30,23 +32,23 @@ public class FetchServerList implements Runnable {
         {
             MyHttpClient client = new MyHttpClient(mContext);
             HttpResponse response = client.execute(new HttpGet(mUrl));
-            JsonObject serverList = JsonObject.readFrom(EntityUtils.toString(response.getEntity(), "UTF-8"));
+            JsonObject serverList = (JsonObject)JsonParser.Parse(EntityUtils.toString(response.getEntity(), "UTF-8"));
 
             dba.open();
             dba.beginTransaction();
 
             dba.ClearServers();
-            JsonArray servers = serverList.get("ServerList").asArray();
-            for (JsonValue sVal : servers ) {
-                JsonObject server = sVal.asObject();
+            JsonArray servers = (JsonArray)serverList.get("ServerList");
+            for (Object sVal : servers ) {
+                JsonObject server = (JsonObject)sVal;
 
-                dba.InsertServer(server.get("ID").asString(), server.get("Name").asString(),
-                        server.get("Info").asString(), server.get("URL").asString());
+                dba.InsertServer((String)server.get("ID"), (String)server.get("Name"),
+                        (String)server.get("Info"), (String)server.get("URL"));
             }
 
-            JsonArray devIds = serverList.get("Development").asArray();
-            for (JsonValue sVal : devIds) {
-                dba.SetDevServer(sVal.asString());
+            JsonArray devIds = (JsonArray)serverList.get("Development");
+            for (Object sVal : devIds) {
+                dba.SetDevServer((String)sVal);
             }
 
             dba.setTransactionSuccessful();
