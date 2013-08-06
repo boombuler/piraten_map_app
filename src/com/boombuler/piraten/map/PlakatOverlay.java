@@ -3,9 +3,12 @@ package com.boombuler.piraten.map;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import org.osmdroid.DefaultResourceProxyImpl;
+import org.osmdroid.api.IMapView;
+import org.osmdroid.views.overlay.ItemizedOverlay;
 
-import com.google.android.maps.ItemizedOverlay;
 
 public class PlakatOverlay extends ItemizedOverlay<PlakatOverlayItem> {
 
@@ -13,7 +16,7 @@ public class PlakatOverlay extends ItemizedOverlay<PlakatOverlayItem> {
 	private final PirateMap mContext;
 	
 	public PlakatOverlay(PirateMap context, List<PlakatOverlayItem> items) {
-		super(PlakatOverlayItem.getDefaultDrawable());
+		super(PlakatOverlayItem.getDefaultDrawable(), new DefaultResourceProxyImpl(context));
 		mContext = context;
 		if (items != null) {
 			mItems = items;
@@ -41,9 +44,15 @@ public class PlakatOverlay extends ItemizedOverlay<PlakatOverlayItem> {
     	
     	return true;
     }
-	
+/*
 	public static void Prepare(Drawable[] mIcons) {
 		for(int i = 0; i < mIcons.length; i++)
-			mIcons[i] = PlakatOverlay.boundCenter(mIcons[i]);
+			mIcons[i] = PlakatOverlay. boundCenter(mIcons[i]);
 	}
+  */
+
+    @Override
+    public boolean onSnapToItem(int i, int i2, Point point, IMapView iMapView) {
+        return false;
+    }
 }

@@ -2,13 +2,10 @@ package com.boombuler.piraten.map;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -18,8 +15,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Overlay;
 
-public class PirateMap extends MapActivity {
+public class PirateMap extends Activity {
 	private MapView mMapView;
 	private CurrentPositionOverlay mMyPosOverlay;
 	static int REQUEST_EDIT_PLAKAT = 1;
@@ -29,6 +30,7 @@ public class PirateMap extends MapActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.main);
         
         Resources res = getResources();
@@ -43,6 +45,7 @@ public class PirateMap extends MapActivity {
         
         mMapView = (MapView)findViewById(R.id.mapview);
         mMapView.setBuiltInZoomControls(true);
+        mMapView.setMultiTouchControls(true);
     }
     
     @Override
@@ -89,7 +92,7 @@ public class PirateMap extends MapActivity {
     private void BuildMap() {
     	final List<Overlay> overlays = mMapView.getOverlays();
 		overlays.clear();
-		
+
 		new Thread(new Runnable() {
 			
 			public void run() {
@@ -109,9 +112,14 @@ public class PirateMap extends MapActivity {
 		    
 			mMyPosOverlay.runOnFirstFix(new Runnable() {
 	            public void run() {
-	            	if (mMapView.getZoomLevel() < INITIAL_ZOOM)
-	            		mMapView.getController().setZoom(INITIAL_ZOOM);
-	            	mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
+                PirateMap.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mMapView.getZoomLevel() < INITIAL_ZOOM)
+                            mMapView.getController().setZoom(INITIAL_ZOOM);
+                        mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
+                    }
+                });
 	            }
 	        });
 			mMyPosOverlay.enable();
@@ -126,6 +134,7 @@ public class PirateMap extends MapActivity {
     		BuildMap();
     	if (mMyPosOverlay != null)
     		mMyPosOverlay.enable();
+
     	super.onResume();
     }
     
@@ -177,9 +186,4 @@ public class PirateMap extends MapActivity {
         });
         sc.synchronize();
     }
-
-	@Override
-	protected boolean isRouteDisplayed() {
-		return false;
-	}
 }

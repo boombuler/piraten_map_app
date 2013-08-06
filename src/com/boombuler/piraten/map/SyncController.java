@@ -19,7 +19,6 @@ import com.boombuler.piraten.map.proto.Api.Request;
 import com.boombuler.piraten.map.proto.Api.Response;
 import com.boombuler.piraten.map.proto.Api.ViewRequest;
 import com.boombuler.piraten.utils.MyHttpClient;
-import com.google.android.maps.GeoPoint;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -34,6 +33,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import org.osmdroid.util.GeoPoint;
 
 public class SyncController implements Runnable {
 	private static final String TAG = "boombuler.synccontroller";

@@ -3,12 +3,9 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-
-    <com.google.android.maps.MapView
+    <org.osmdroid.views.MapView
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:clickable="true"
-        android:apiKey="0mujibq0NdSvyzSKt9PTezYT-vGW-k88HnU2ftQ"
     />
 </RelativeLayout>

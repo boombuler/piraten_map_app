@@ -1,11 +1,11 @@
 package com.boombuler.piraten.map;
 
 import android.content.Context;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.MyLocationOverlay;
 
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
 
-public class CurrentPositionOverlay extends MyLocationOverlay  {
+public class CurrentPositionOverlay extends MyLocationOverlay {
 
 	public CurrentPositionOverlay(Context context, MapView map) {
 		super(context, map);

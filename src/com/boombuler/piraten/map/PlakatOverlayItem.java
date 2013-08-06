@@ -2,8 +2,8 @@ package com.boombuler.piraten.map;
 
 import android.graphics.drawable.Drawable;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.OverlayItem;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.overlay.OverlayItem;
 
 public class PlakatOverlayItem extends OverlayItem {
 
@@ -60,7 +60,7 @@ public class PlakatOverlayItem extends OverlayItem {
 	public static void InitResources(Drawable p_default, Drawable p_ok, Drawable p_dieb, Drawable p_nice, Drawable w_default, Drawable w_ok, Drawable p_wracked, Drawable p_a0)
 	{
 		MIcons = new Drawable[] { p_default, p_ok, p_dieb, p_nice, w_default, w_ok, p_wracked, p_a0 };
-		PlakatOverlay.Prepare(MIcons);
+		//PlakatOverlay.Prepare(MIcons);
 	}
 	
 	public static Drawable getDefaultDrawable() {
@@ -68,7 +68,7 @@ public class PlakatOverlayItem extends OverlayItem {
 	}
 	
 	public PlakatOverlayItem(int id, int lat, int lon, int type, String lastMod, String comment) {
-		super(new GeoPoint(lat, lon), null, null);
+		super(null, null, new GeoPoint(lat, lon));
 		mLastModified = lastMod;
 		mId = id;
 		
