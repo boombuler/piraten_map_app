@@ -1,4 +1,4 @@
-package com.boombuler.piraten.map;
+package com.boombuler.piraten.map.data;
 
 import java.util.List;
 
@@ -8,6 +8,9 @@ import android.graphics.drawable.Drawable;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.api.IMapView;
 import org.osmdroid.views.overlay.ItemizedOverlay;
+
+import com.boombuler.piraten.map.PirateMap;
+import com.boombuler.piraten.map.PlakatDetailsActivity;
 
 
 public class PlakatOverlay extends ItemizedOverlay<PlakatOverlayItem> {

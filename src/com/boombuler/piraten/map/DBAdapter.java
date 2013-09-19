@@ -3,6 +3,10 @@ package com.boombuler.piraten.map;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.boombuler.piraten.map.data.PlakatOverlay;
+import com.boombuler.piraten.map.data.PlakatOverlayItem;
+import com.boombuler.piraten.map.data.ServerInfo;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -145,7 +149,7 @@ public class DBAdapter {
 		}
 	}
 
-	public void GetChangedItems(List<PlakatOverlayItem> inserted,
+	public void getChangedItems(List<PlakatOverlayItem> inserted,
 			List<PlakatOverlayItem> changed, List<Integer> deleted) {
 		Cursor changes = mDatabase.query(TABLE_CHANGES, null, null, null, null,
 				null, null);

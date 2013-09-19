@@ -1,4 +1,4 @@
-package com.boombuler.piraten.map;
+package com.boombuler.piraten.map.data;
 
 import android.graphics.drawable.Drawable;
 
@@ -15,14 +15,14 @@ public class PlakatOverlayItem extends OverlayItem {
 	private static final String STR_PLAKAT_WRECKED = "plakat_wrecked";
 	private static final String STR_PLAKAT_A0 = "plakat_a0";
 
-	private static final int INT_DEFAULT = 0;
-	private static final int INT_PLAKAT_OK = 1;
-	private static final int INT_PLAKAT_DIEB = 2;
-	private static final int INT_PLAKAT_NICE_PLACE = 3;
-	private static final int INT_WAND = 4;
-	private static final int INT_WAND_OK = 5;
-	private static final int INT_PLAKAT_WRECKED = 6;
-	private static final int INT_PLAKAT_A0 = 7;
+	protected static final int INT_DEFAULT = 0;
+	protected static final int INT_PLAKAT_OK = 1;
+	protected static final int INT_PLAKAT_DIEB = 2;
+	protected static final int INT_PLAKAT_NICE_PLACE = 3;
+	protected static final int INT_WAND = 4;
+	protected static final int INT_WAND_OK = 5;
+	protected static final int INT_PLAKAT_WRECKED = 6;
+	protected static final int INT_PLAKAT_A0 = 7;
 	
 	final int mId;
 	final String mLastModified;

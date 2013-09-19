@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import com.boombuler.piraten.map.data.ServerInfo;
+
 public class SettingsActivity extends PreferenceActivity implements OnPreferenceChangeListener, OnPreferenceClickListener {
 
 	public static final String KEY_USERNAME = "username";

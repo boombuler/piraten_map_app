@@ -2,28 +2,29 @@ package com.boombuler.piraten.map;
 
 import java.util.List;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Build;
-
-import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.os.Build;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import com.boombuler.piraten.map.data.PlakatOverlayItem;
+
 public class PirateMap extends Activity {
 	private MapView mMapView;
 	private CurrentPositionOverlay mMyPosOverlay;
-	static int REQUEST_EDIT_PLAKAT = 1;
+	public static int REQUEST_EDIT_PLAKAT = 1;
 	static int INITIAL_ZOOM = 16;
 	
     /** Called when the activity is first created. */
@@ -51,7 +52,7 @@ public class PirateMap extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if (requestCode == REQUEST_EDIT_PLAKAT && resultCode == RESULT_OK)
-    		BuildMap(); // Something changed so reload!
+    		buildMap(); // Something changed so reload!
     	super.onActivityResult(requestCode, resultCode, data);
     }
     
@@ -89,7 +90,7 @@ public class PirateMap extends Activity {
         return true;
     }
     
-    private void BuildMap() {
+    private void buildMap() {
     	final List<Overlay> overlays = mMapView.getOverlays();
 		overlays.clear();
 
@@ -131,7 +132,7 @@ public class PirateMap extends Activity {
     @Override
     protected void onResume() {
     	if (mMyPosOverlay == null)
-    		BuildMap();
+    		buildMap();
     	if (mMyPosOverlay != null)
     		mMyPosOverlay.enable();
 
@@ -181,7 +182,7 @@ public class PirateMap extends Activity {
                 } else {
                     editor.commit();
                 }
-                BuildMap();
+                buildMap();
             }
         });
         sc.synchronize();

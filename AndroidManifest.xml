@@ -3,7 +3,7 @@
       package="com.boombuler.piraten.map"
       android:versionCode="1201"
       android:versionName="1.2.1">
-    <uses-sdk android:minSdkVersion="7" 
+    <uses-sdk android:minSdkVersion="15" 
               android:targetSdkVersion="11"/>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>

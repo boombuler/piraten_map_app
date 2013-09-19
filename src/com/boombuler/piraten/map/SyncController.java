@@ -10,6 +10,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import com.boombuler.piraten.map.data.PlakatOverlayItem;
 import com.boombuler.piraten.map.proto.Api.AddRequest;
 import com.boombuler.piraten.map.proto.Api.BoundingBox;
 import com.boombuler.piraten.map.proto.Api.ChangeRequest;
@@ -109,7 +110,7 @@ public class SyncController implements Runnable {
 		DBAdapter dba = new DBAdapter(mContext);
 		try {
 			dba.open();			
-			dba.GetChangedItems(inserted, changed, deleted);
+			dba.getChangedItems(inserted, changed, deleted);
 		} finally {
 			dba.close();
 		}

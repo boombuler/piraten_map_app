@@ -81,7 +81,7 @@ public class AccuracyPreference extends DialogPreference implements
 		mValueText.setText(mDialogMessage + String.format(mSuffix, val));
 		if (shouldPersist())
 			persistInt(value);
-		callChangeListener(new Integer(value));
+		callChangeListener(Integer.valueOf(value));
 	}
 
 	public void onStartTrackingTouch(SeekBar seek) {
