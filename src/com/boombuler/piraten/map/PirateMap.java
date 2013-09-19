@@ -92,39 +92,45 @@ public class PirateMap extends Activity {
     private void BuildMap() {
     	final List<Overlay> overlays = mMapView.getOverlays();
 		overlays.clear();
-
-		new Thread(new Runnable() {
-			
-			public void run() {
-				DBAdapter dba = new DBAdapter(PirateMap.this);
-				try {
-					dba.open();
-					overlays.add(dba.getMapOverlay());
-				} finally {
-					dba.close();
-				}
-				
-			}
-		}).start();
 		
-		if (mMyPosOverlay == null) {
-			mMyPosOverlay = new CurrentPositionOverlay(this, mMapView);
-		    
-			mMyPosOverlay.runOnFirstFix(new Runnable() {
-	            public void run() {
-                PirateMap.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mMapView.getZoomLevel() < INITIAL_ZOOM)
-                            mMapView.getController().setZoom(INITIAL_ZOOM);
-                        mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
-                    }
-                });
-	            }
-	        });
-			mMyPosOverlay.enable();
-    	}
-	    overlays.add(mMyPosOverlay);
+		try {
+			Thread dbThread = new Thread(new Runnable() {
+
+				public void run() {
+					DBAdapter dba = new DBAdapter(PirateMap.this);
+					try {
+						dba.open();
+						overlays.add(dba.getMapOverlay());
+					} finally {
+						dba.close();
+					}	
+				}
+			});
+			dbThread.start();
+
+			if (mMyPosOverlay == null) {
+				mMyPosOverlay = new CurrentPositionOverlay(this, mMapView);
+
+				mMyPosOverlay.runOnFirstFix(new Runnable() {
+					public void run() {
+						PirateMap.this.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								if (mMapView.getZoomLevel() < INITIAL_ZOOM)
+									mMapView.getController().setZoom(INITIAL_ZOOM);
+								mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
+							}
+						});
+					}
+				});
+				mMyPosOverlay.enable();
+			}
+			overlays.add(mMyPosOverlay);
+
+			dbThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		mMapView.invalidate();
     }
     
