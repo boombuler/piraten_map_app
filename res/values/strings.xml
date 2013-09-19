@@ -19,7 +19,22 @@
     <string name="tvComment">Kommentar</string>
     
     <string name="btSave">Speichern</string>
+    <string name="filter_title">Filter</string>
+    <string name="button_filter">filtern</string>
+    <string name="choose_election">Markertypen</string>
+    <string-array name="election_array">
+        <item>Alle Marker</item>
+        <item>Unbearbeitet</item>
+        <item>Plakat hängt</item>
+        <item>Plakat wurde gestohlen</item>
+        <item>Gute Stelle für ein Plakat</item>
+        <item>Plakatwand der Gemeinde</item>
+        <item>Plakat an der Plakatwand</item>
+        <item>Plakat beschädigt</item>
+        <item>A0-Plakat steht</item>
+        </string-array>
     
+    <string name="filter">Filter</string>
     <string name="choose_marker">Marker Art</string>
     <string name="get_position">Suche aktuelle Position</string>
     <string name="current_accuracy">Genauigkeit %.1f Meter</string>

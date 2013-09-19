@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
 
+import com.boombuler.piraten.map.Constants;
 import com.boombuler.piraten.map.PirateMap;
 import com.boombuler.piraten.map.PlakatDetailsActivity;
 
@@ -71,7 +72,7 @@ public class PlakatOverlay extends ItemizedOverlay<PlakatOverlayItem> {
     	mContext.startActivityForResult(
     			new Intent(mContext, PlakatDetailsActivity.class)
     				.putExtra(PlakatDetailsActivity.EXTRA_PLAKAT_ID, item.getId()),
-    				PirateMap.REQUEST_EDIT_PLAKAT);
+    				Constants.REQ_DETAILS);
     	
     	return true;
     }

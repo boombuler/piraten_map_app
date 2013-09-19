@@ -24,6 +24,11 @@
 		
 		<activity android:name="PlakatDetailsActivity"
 		          android:theme="@style/MapAppTheme" />
-		<activity android:name="SettingsActivity" />
+		<activity android:name="SettingsActivity" 
+		    />
+		<activity android:name=".FilterActivity"
+            android:label="@string/filter_title"
+        	android:icon="@drawable/action_search"
+        	android:theme="@style/MapAppTheme" />
     </application>
 </manifest>

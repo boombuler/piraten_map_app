@@ -8,8 +8,9 @@ import android.os.AsyncTask;
 
 import com.boombuler.piraten.map.data.PlakatOverlay;
 import com.boombuler.piraten.map.data.PlakatOverlayItem;
+import com.boombuler.piraten.map.data.PlakatOverlayItemFilter;
 
-public class PlakatLoadingTask extends AsyncTask<Void, Void, Void> {
+public class PlakatLoadingTask extends AsyncTask<PlakatOverlayItemFilter, Void, Void> {
 
 	private PirateMap context;
 	private MapView mMapView;
@@ -21,12 +22,13 @@ public class PlakatLoadingTask extends AsyncTask<Void, Void, Void> {
 	}
 	
 	@Override
-	protected Void doInBackground(Void... params) {
+	protected Void doInBackground(PlakatOverlayItemFilter... filters) {
+		PlakatOverlayItemFilter filter = filters[0];
 		
 		DBAdapter dba = new DBAdapter(context);
 		try {
 			dba.open();
-			List<PlakatOverlayItem> items = dba.getMapOverlayItems();
+			List<PlakatOverlayItem> items = dba.getMapOverlayItems(filter);
 			plakatOverlay = new PlakatOverlay(context, items);
 			mMapView.getOverlays().add(plakatOverlay);
 		} finally {

@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
 import com.boombuler.piraten.map.data.PlakatOverlayItem;
+import com.boombuler.piraten.map.data.PlakatOverlayItemFilter;
 import com.boombuler.piraten.map.data.ServerInfo;
 
 public class DBAdapter {
@@ -238,11 +239,11 @@ public class DBAdapter {
 		}
 	}
 
-	public List<PlakatOverlayItem> getMapOverlayItems() {
+	public List<PlakatOverlayItem> getMapOverlayItems(PlakatOverlayItemFilter filter) {
 		if (mContext instanceof PirateMap) {
 			LinkedList<PlakatOverlayItem> items = new LinkedList<PlakatOverlayItem>();
 
-			Cursor crs = mDatabase.query(TABLE_PLAKATE, null, null, null, null,
+			Cursor crs = mDatabase.query(TABLE_PLAKATE, null, filter.where(), filter.whereVales(), null,
 					null, null);
 			if (crs != null) {
 				try {

@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,14 +22,16 @@ import android.view.MenuItem;
 
 import com.boombuler.piraten.map.data.PlakatOverlay;
 import com.boombuler.piraten.map.data.PlakatOverlayItem;
+import com.boombuler.piraten.map.data.PlakatOverlayItemFilter;
 
 public class PirateMap extends Activity {
 	private MapView mMapView;
 	private CurrentPositionOverlay mMyPosOverlay;
 	protected PlakatOverlay plakatOverlay;
-	public static int REQUEST_EDIT_PLAKAT = 1;
+	private PlakatOverlayItemFilter mFilter = new PlakatOverlayItemFilter();
 	static int INITIAL_ZOOM = 16;
 	private boolean initialMoveToLocationPerformed = false;
+	
 	
 	public MapView getMapView() {
 		return mMapView;
@@ -74,8 +77,13 @@ public class PirateMap extends Activity {
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	if (requestCode == REQUEST_EDIT_PLAKAT && resultCode == RESULT_OK)
-    		buildMap(); // Something changed so reload!
+    	if (requestCode == Constants.REQ_DETAILS && resultCode == RESULT_OK)
+    		buildMap(mFilter); // Something changed so reload!
+    	else if (requestCode == Constants.REQ_FILTER && resultCode == Constants.RES_FILTER) {
+    		mFilter = data.getExtras().getParcelable(Constants.EXTRA_ITEMFILTER);
+    		buildMap(mFilter); // Something changed so reload!
+    	}
+    		
     	super.onActivityResult(requestCode, resultCode, data);
     }
     
@@ -90,6 +98,9 @@ public class PirateMap extends Activity {
 				return true;
             case R.id.menu_my_location:
             	moveToMyLocation();
+            	return true;
+            case R.id.menu_filter:
+            	search();
             	return true;
             case R.id.menu_settings:
             	startActivity(new Intent(PirateMap.this, SettingsActivity.class));
@@ -116,11 +127,11 @@ public class PirateMap extends Activity {
         return true;
     }
     
-    private void buildMap() {
+    private void buildMap(PlakatOverlayItemFilter mFilter) {
     	final List<Overlay> overlays = mMapView.getOverlays();
 		overlays.clear();
     	
-    	new PlakatLoadingTask(this).execute();
+    	new PlakatLoadingTask(this).execute(mFilter);
     	
     	mMyPosOverlay = new CurrentPositionOverlay(PirateMap.this, mMapView);
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -138,7 +149,7 @@ public class PirateMap extends Activity {
     @Override
     protected void onResume() {
     	if (mMyPosOverlay == null)
-    		buildMap();
+    		buildMap(mFilter);
     	if (mMyPosOverlay != null)
     		mMyPosOverlay.enable();
 
@@ -150,6 +161,12 @@ public class PirateMap extends Activity {
     	if (mMyPosOverlay != null)
     		mMyPosOverlay.disable();
     	super.onPause();
+    }
+    
+    private void search(){
+    	Intent intent = new Intent(PirateMap.this, FilterActivity.class);
+		if (mFilter!=null) intent.putExtra(Constants.EXTRA_ITEMFILTER, (Parcelable)mFilter);
+		startActivityForResult(intent, Constants.REQ_FILTER);
     }
 
     private void AddMarker() {
@@ -170,7 +187,7 @@ public class PirateMap extends Activity {
             startActivityForResult(
                     new Intent(PirateMap.this, PlakatDetailsActivity.class)
                             .putExtra(PlakatDetailsActivity.EXTRA_NEW_PLAKAT, true),
-                    PirateMap.REQUEST_EDIT_PLAKAT);
+                    Constants.REQ_DETAILS);
         }
     }
     
@@ -188,7 +205,7 @@ public class PirateMap extends Activity {
                 } else {
                     editor.commit();
                 }
-                buildMap();
+                buildMap(mFilter);
             }
         });
         sc.synchronize();
