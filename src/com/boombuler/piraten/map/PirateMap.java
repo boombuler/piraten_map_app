@@ -19,11 +19,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.boombuler.piraten.map.data.PlakatOverlay;
 import com.boombuler.piraten.map.data.PlakatOverlayItem;
 
 public class PirateMap extends Activity {
 	private MapView mMapView;
 	private CurrentPositionOverlay mMyPosOverlay;
+	protected PlakatOverlay plakatOverlay;
 	public static int REQUEST_EDIT_PLAKAT = 1;
 	static int INITIAL_ZOOM = 16;
 	
@@ -101,7 +103,9 @@ public class PirateMap extends Activity {
 					DBAdapter dba = new DBAdapter(PirateMap.this);
 					try {
 						dba.open();
-						overlays.add(dba.getMapOverlay(null));
+						List<PlakatOverlayItem> items = dba.getMapOverlayItems();
+						plakatOverlay = new PlakatOverlay((PirateMap) PirateMap.this, items);
+						overlays.add(plakatOverlay);
 					} finally {
 						dba.close();
 					}	

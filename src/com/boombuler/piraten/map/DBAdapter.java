@@ -3,16 +3,15 @@ package com.boombuler.piraten.map;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.boombuler.piraten.map.data.PlakatOverlay;
-import com.boombuler.piraten.map.data.PlakatOverlayItem;
-import com.boombuler.piraten.map.data.ServerInfo;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+
+import com.boombuler.piraten.map.data.PlakatOverlayItem;
+import com.boombuler.piraten.map.data.ServerInfo;
 
 public class DBAdapter {
 
@@ -239,9 +238,7 @@ public class DBAdapter {
 		}
 	}
 
-
-
-	public PlakatOverlay getMapOverlay() {
+	public List<PlakatOverlayItem> getMapOverlayItems() {
 		if (mContext instanceof PirateMap) {
 			LinkedList<PlakatOverlayItem> items = new LinkedList<PlakatOverlayItem>();
 
@@ -260,7 +257,7 @@ public class DBAdapter {
 					crs.close();
 				}
 			}
-			return new PlakatOverlay((PirateMap) mContext, items);
+			return items;
 		} else
 			return null;
 	}
