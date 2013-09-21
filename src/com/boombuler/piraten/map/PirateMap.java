@@ -29,7 +29,27 @@ public class PirateMap extends Activity {
 	public static int REQUEST_EDIT_PLAKAT = 1;
 	static int INITIAL_ZOOM = 16;
 	
-    /** Called when the activity is first created. */
+	public MapView getMapView() {
+		return mMapView;
+	}
+	
+    public CurrentPositionOverlay getMyPosOverlay() {
+		return mMyPosOverlay;
+	}
+
+	public void setMyPosOverlay(CurrentPositionOverlay mMyPosOverlay) {
+		this.mMyPosOverlay = mMyPosOverlay;
+	}
+
+	public PlakatOverlay getPlakatOverlay() {
+		return plakatOverlay;
+	}
+
+	public void setPlakatOverlay(PlakatOverlay plakatOverlay) {
+		this.plakatOverlay = plakatOverlay;
+	}
+
+	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,47 +115,24 @@ public class PirateMap extends Activity {
     private void buildMap() {
     	final List<Overlay> overlays = mMapView.getOverlays();
 		overlays.clear();
-		
-		try {
-			Thread dbThread = new Thread(new Runnable() {
-
-				public void run() {
-					DBAdapter dba = new DBAdapter(PirateMap.this);
-					try {
-						dba.open();
-						List<PlakatOverlayItem> items = dba.getMapOverlayItems();
-						plakatOverlay = new PlakatOverlay((PirateMap) PirateMap.this, items);
-						overlays.add(plakatOverlay);
-					} finally {
-						dba.close();
-					}	
-				}
-			});
-			dbThread.start();
-
-			if (mMyPosOverlay == null) {
-				mMyPosOverlay = new CurrentPositionOverlay(this, mMapView);
-
-				mMyPosOverlay.runOnFirstFix(new Runnable() {
+    	
+    	new PlakatLoadingTask(this, mMapView).execute();
+    	
+    	mMyPosOverlay = new CurrentPositionOverlay(PirateMap.this, mMapView);
+		mMyPosOverlay.runOnFirstFix(new Runnable() {
+			public void run() {
+				PirateMap.this.runOnUiThread(new Runnable() {
+					@Override
 					public void run() {
-						PirateMap.this.runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								if (mMapView.getZoomLevel() < INITIAL_ZOOM)
-									mMapView.getController().setZoom(INITIAL_ZOOM);
-								mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
-							}
-						});
+						if (mMapView.getZoomLevel() < INITIAL_ZOOM)
+							mMapView.getController().setZoom(INITIAL_ZOOM);
+						mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
 					}
 				});
-				mMyPosOverlay.enable();
 			}
-			overlays.add(mMyPosOverlay);
-
-			dbThread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		});
+		mMyPosOverlay.enable();
+		mMapView.getOverlays().add(mMyPosOverlay);
 		mMapView.invalidate();
     }
     
