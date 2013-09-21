@@ -3,7 +3,6 @@ package com.boombuler.piraten.map;
 import java.util.List;
 
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.Overlay;
 
 import android.os.AsyncTask;
 
@@ -41,6 +40,7 @@ public class PlakatLoadingTask extends AsyncTask<Void, Void, Void> {
 	protected void onPostExecute(Void result) {
 		
 		context.setPlakatOverlay(plakatOverlay);
+		mMapView.getOverlays().add(context.getMyPosOverlay());
 		mMapView.invalidate();
 
 		super.onPostExecute(result);

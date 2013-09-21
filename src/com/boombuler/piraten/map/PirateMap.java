@@ -116,7 +116,7 @@ public class PirateMap extends Activity {
     	final List<Overlay> overlays = mMapView.getOverlays();
 		overlays.clear();
     	
-    	new PlakatLoadingTask(this, mMapView).execute();
+    	new PlakatLoadingTask(this).execute();
     	
     	mMyPosOverlay = new CurrentPositionOverlay(PirateMap.this, mMapView);
 		mMyPosOverlay.runOnFirstFix(new Runnable() {
@@ -132,7 +132,6 @@ public class PirateMap extends Activity {
 			}
 		});
 		mMyPosOverlay.enable();
-		mMapView.getOverlays().add(mMyPosOverlay);
 		mMapView.invalidate();
     }
     
