@@ -9,6 +9,9 @@
     <string name="menu_sync">Datenabgleich</string>
     <string name="menu_add">Marker setzten</string>
     <string name="menu_delete">Marker löschen</string>
+    <string name="menu_add_plakat">Plakat setzen</string>
+    <string name="menu_edit">Plakat bearbeiten</string>
+    <string name="menu_my_location">Aktuelle Position</string>
     
     <string name="ask_marker_delete">Marker wirklich löschen?</string>
     <string name="marker_kind">Marker Art:</string>

@@ -87,6 +87,9 @@ public class PirateMap extends Activity {
             case R.id.menu_add:
             	AddMarker();
 				return true;
+            case R.id.menu_my_location:
+            	moveToMyLocation();
+            	return true;
             case R.id.menu_settings:
             	startActivity(new Intent(PirateMap.this, SettingsActivity.class));
 				return true;
@@ -133,6 +136,10 @@ public class PirateMap extends Activity {
 		});
 		mMyPosOverlay.enable();
 		mMapView.invalidate();
+    }
+    
+    private void moveToMyLocation() {
+    	mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
     }
     
     @Override
