@@ -120,7 +120,6 @@ public class PirateMap extends Activity {
 			}
 		});
 		mMyPosOverlay.enable();
-		mMapView.getOverlays().add(mMyPosOverlay);
 		mMapView.invalidate();
     }
     
