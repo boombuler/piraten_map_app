@@ -28,6 +28,7 @@ public class PirateMap extends Activity {
 	protected PlakatOverlay plakatOverlay;
 	public static int REQUEST_EDIT_PLAKAT = 1;
 	static int INITIAL_ZOOM = 16;
+	private boolean initialMoveToLocationPerformed = false;
 	
 	public MapView getMapView() {
 		return mMapView;
@@ -122,22 +123,10 @@ public class PirateMap extends Activity {
     	new PlakatLoadingTask(this).execute();
     	
     	mMyPosOverlay = new CurrentPositionOverlay(PirateMap.this, mMapView);
-		mMyPosOverlay.runOnFirstFix(new Runnable() {
-			public void run() {
-				PirateMap.this.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						if (mMapView.getZoomLevel() < INITIAL_ZOOM)
-							mMapView.getController().setZoom(INITIAL_ZOOM);
-						
-						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(PirateMap.this);
-						boolean returnToMyLocation = prefs.getBoolean(SettingsActivity.KEY_RETURN_TO_MY_LOCATION, true);
-						if(returnToMyLocation)
-							mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
-					}
-				});
-			}
-		});
+    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean returnToMyLocation = initialMoveToLocationPerformed ? prefs.getBoolean(SettingsActivity.KEY_RETURN_TO_MY_LOCATION, true) : true;
+		mMyPosOverlay.moveToMyPosition(this, returnToMyLocation );
+		initialMoveToLocationPerformed = true; // couldn't think of a better way :/
 		mMyPosOverlay.enable();
 		mMapView.invalidate();
     }
