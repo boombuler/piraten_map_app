@@ -44,6 +44,8 @@
         <string name="settings_accuracy">Minimale Genauigkeit</string>
         <string name="settings_accuracy_meters">: %.2f Meter</string>
         <string name="settings_accuracy_summary">Gibt an wie genau die aktuelle Position ermittelt werden soll, bevor ein Plakat eingetragen wird.</string>
+        <string name="settings_return_to_my_location_summary">Kehre nach dem Speichern eines Plakates zur aktuellen Position zurück.</string>
+        <string name="settings_return_to_my_location">Zur aktuellen Position zurückkehren</string>
         
         <string name="setting_server">Server</string>
         <string name="setting_server_summary">Gibt an welcher Server für den Datenabgleich verwendet wird.</string>

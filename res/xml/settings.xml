@@ -17,6 +17,11 @@
 			android:summary="@string/settings_password_summary"/>
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/behavior">
+	    <CheckBoxPreference
+			android:summary="@string/settings_return_to_my_location_summary"  
+			android:title="@string/settings_return_to_my_location" 
+			android:key="return_to_my_location" 
+			android:defaultValue="true"/>
 		<com.boombuler.piraten.map.AccuracyPreference
 			android:summary="@string/settings_accuracy_summary"  
 			android:max="200"

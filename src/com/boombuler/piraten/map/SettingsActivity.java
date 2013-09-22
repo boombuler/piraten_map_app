@@ -27,6 +27,7 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	public static final String KEY_PASSWORD = "password";
 	public static final String KEY_ACCURACY = "accuracy";
 	public static final String KEY_SYNC_RANGE = "sync_range";
+	public static final String KEY_RETURN_TO_MY_LOCATION = "return_to_my_location";
 	public static final String KEY_SERVER = "sync_server";
     public static final  String KEY_HAS_SYNCED = "has_synced_before";
 	private static final String KEY_ABOUT_SERVER = "about_server";

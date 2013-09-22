@@ -129,7 +129,11 @@ public class PirateMap extends Activity {
 					public void run() {
 						if (mMapView.getZoomLevel() < INITIAL_ZOOM)
 							mMapView.getController().setZoom(INITIAL_ZOOM);
-						mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
+						
+						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(PirateMap.this);
+						boolean returnToMyLocation = prefs.getBoolean(SettingsActivity.KEY_RETURN_TO_MY_LOCATION, true);
+						if(returnToMyLocation)
+							mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
 					}
 				});
 			}
