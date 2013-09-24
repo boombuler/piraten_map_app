@@ -1,16 +1,21 @@
 package com.boombuler.piraten.map;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import com.boombuler.piraten.utils.JsonArray;
-import com.boombuler.piraten.utils.JsonObject;
-import com.boombuler.piraten.utils.MyHttpClient;
-import com.boombuler.piraten.utils.JsonParser;
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
 
-import java.util.HashMap;
+import android.app.Activity;
+import android.app.ProgressDialog;
+
+import com.boombuler.piraten.utils.JsonArray;
+import com.boombuler.piraten.utils.JsonObject;
+import com.boombuler.piraten.utils.JsonParser;
+import com.boombuler.piraten.utils.MyHttpClient;
 
 
 public class FetchServerList implements Runnable {
@@ -28,34 +33,51 @@ public class FetchServerList implements Runnable {
     @Override
     public void run() {
         DBAdapter dba = new DBAdapter(mContext);
+        JsonObject serverList = null;
         try
         {
-            MyHttpClient client = new MyHttpClient(mContext);
+        	MyHttpClient client = new MyHttpClient(mContext);
             HttpResponse response = client.execute(new HttpGet(mUrl));
-            JsonObject serverList = (JsonObject)JsonParser.Parse(EntityUtils.toString(response.getEntity(), "UTF-8"));
+            serverList = (JsonObject)JsonParser.Parse(EntityUtils.toString(response.getEntity(), "UTF-8"));
+        } catch (UnknownHostException e) {
+        	e.printStackTrace();
+        } catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (com.boombuler.piraten.utils.JsonParser.ParseException e) {
+			e.printStackTrace();
+		}
+        
+        // online continue if we got a server list
+        if(serverList != null) {
+        	try
+        	{
+        		dba.open();
+        		dba.beginTransaction();
 
-            dba.open();
-            dba.beginTransaction();
+        		dba.ClearServers();
+        		JsonArray servers = (JsonArray)serverList.get("ServerList");
+        		for (Object sVal : servers ) {
+        			JsonObject server = (JsonObject)sVal;
 
-            dba.ClearServers();
-            JsonArray servers = (JsonArray)serverList.get("ServerList");
-            for (Object sVal : servers ) {
-                JsonObject server = (JsonObject)sVal;
+        			dba.InsertServer((String)server.get("ID"), (String)server.get("Name"),
+        					(String)server.get("Info"), (String)server.get("URL"));
+        		}
 
-                dba.InsertServer((String)server.get("ID"), (String)server.get("Name"),
-                        (String)server.get("Info"), (String)server.get("URL"));
-            }
+        		JsonArray devIds = (JsonArray)serverList.get("Development");
+        		for (Object sVal : devIds) {
+        			dba.SetDevServer((String)sVal);
+        		}
 
-            JsonArray devIds = (JsonArray)serverList.get("Development");
-            for (Object sVal : devIds) {
-                dba.SetDevServer((String)sVal);
-            }
-
-            dba.setTransactionSuccessful();
-        } catch (Exception e) {
-        } finally {
-            dba.endTransaction();
-            dba.close();
+        		dba.setTransactionSuccessful();
+        	} catch (Exception e) {
+        	} finally {
+        		dba.endTransaction();
+        		dba.close();
+        	}
         }
         if (mOnCompleteListener != null)
             mContext.runOnUiThread(mOnCompleteListener);
