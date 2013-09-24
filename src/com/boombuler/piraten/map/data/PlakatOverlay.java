@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.api.IMapView;
+import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.MapView.Projection;
 import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.safecanvas.ISafeCanvas;
 
-import android.content.ClipData.Item;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -43,13 +43,14 @@ public class PlakatOverlay extends ItemizedOverlay<PlakatOverlayItem> {
 
 		final Projection pj = mapView.getProjection();
 		final int size = this.size() - 1;
+		final BoundingBoxE6 bBox = mapView.getProjection().getBoundingBox().increaseByScale(1.2f);
 
 		/* Draw in backward cycle, so the items with the least index are on the front. */
 		for (int i = size; i >= 0; i--) {
 			final PlakatOverlayItem item = getItem(i);
 			pj.toMapPixels(item.getPoint(), mCurScreenCoords);
 
-			if (mapView.getProjection().getBoundingBox().increaseByScale(1.2f).contains(item.getPoint())) {				
+			if (bBox.contains(item.getPoint())) {				
 				onDrawItem((Canvas) canvas, item, mCurScreenCoords);
 			}
 			
