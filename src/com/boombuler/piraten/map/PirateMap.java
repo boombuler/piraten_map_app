@@ -143,7 +143,11 @@ public class PirateMap extends Activity {
     }
     
     private void moveToMyLocation() {
-    	mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
+    	GeoPoint location = mMyPosOverlay.getMyLocation();
+    	if(mMyPosOverlay != null && location != null) {
+    		mMapView.getController().animateTo(location);
+    	}
+    	
     }
     
     @Override
