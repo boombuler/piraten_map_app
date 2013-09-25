@@ -2,18 +2,24 @@ package com.boombuler.piraten.map;
 
 import java.util.List;
 
-import android.content.Intent;
-import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import org.osmdroid.DefaultResourceProxyImpl;
 import org.osmdroid.api.IMapView;
+import org.osmdroid.util.BoundingBoxE6;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.MapView.Projection;
 import org.osmdroid.views.overlay.ItemizedOverlay;
+import org.osmdroid.views.safecanvas.ISafeCanvas;
+
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Point;
 
 
 public class PlakatOverlay extends ItemizedOverlay<PlakatOverlayItem> {
 
 	private List<PlakatOverlayItem> mItems;
 	private final PirateMap mContext;
+	private Point mCurScreenCoords = new Point();
 	
 	public PlakatOverlay(PirateMap context, List<PlakatOverlayItem> items) {
 		super(PlakatOverlayItem.getDefaultDrawable(), new DefaultResourceProxyImpl(context));
@@ -21,6 +27,29 @@ public class PlakatOverlay extends ItemizedOverlay<PlakatOverlayItem> {
 		if (items != null) {
 			mItems = items;
 			populate();
+		}
+	}
+	
+	@Override
+	protected void drawSafe(ISafeCanvas canvas, MapView mapView, boolean shadow) {
+
+		if (shadow) {
+			return;
+		}
+
+		final Projection pj = mapView.getProjection();
+		final int size = this.size() - 1;
+		final BoundingBoxE6 bBox = mapView.getProjection().getBoundingBox().increaseByScale(1.2f);
+
+		/* Draw in backward cycle, so the items with the least index are on the front. */
+		for (int i = size; i >= 0; i--) {
+			final PlakatOverlayItem item = getItem(i);
+			pj.toMapPixels(item.getPoint(), mCurScreenCoords);
+
+			if (bBox.contains(item.getPoint())) {				
+				onDrawItem((Canvas) canvas, item, mCurScreenCoords);
+			}
+			
 		}
 	}
 

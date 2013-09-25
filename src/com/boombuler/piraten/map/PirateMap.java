@@ -2,23 +2,22 @@ package com.boombuler.piraten.map;
 
 import java.util.List;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Build;
-
-import android.content.Intent;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.os.Build;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 public class PirateMap extends Activity {
 	private MapView mMapView;
@@ -26,7 +25,19 @@ public class PirateMap extends Activity {
 	static int REQUEST_EDIT_PLAKAT = 1;
 	static int INITIAL_ZOOM = 16;
 	
-    /** Called when the activity is first created. */
+	public MapView getMapView() {
+		return mMapView;
+	}
+	
+    public CurrentPositionOverlay getMyPosOverlay() {
+		return mMyPosOverlay;
+	}
+
+	public void setMyPosOverlay(CurrentPositionOverlay mMyPosOverlay) {
+		this.mMyPosOverlay = mMyPosOverlay;
+	}
+
+	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,39 +103,23 @@ public class PirateMap extends Activity {
     private void BuildMap() {
     	final List<Overlay> overlays = mMapView.getOverlays();
 		overlays.clear();
-
-		new Thread(new Runnable() {
-			
+    	
+    	new PlakatLoadingTask(this).execute();
+    	
+    	mMyPosOverlay = new CurrentPositionOverlay(PirateMap.this, mMapView);
+		mMyPosOverlay.runOnFirstFix(new Runnable() {
 			public void run() {
-				DBAdapter dba = new DBAdapter(PirateMap.this);
-				try {
-					dba.open();
-					overlays.add(dba.getMapOverlay());
-				} finally {
-					dba.close();
-				}
-				
+				PirateMap.this.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						if (mMapView.getZoomLevel() < INITIAL_ZOOM)
+							mMapView.getController().setZoom(INITIAL_ZOOM);
+						mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
+					}
+				});
 			}
-		}).start();
-		
-		if (mMyPosOverlay == null) {
-			mMyPosOverlay = new CurrentPositionOverlay(this, mMapView);
-		    
-			mMyPosOverlay.runOnFirstFix(new Runnable() {
-	            public void run() {
-                PirateMap.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mMapView.getZoomLevel() < INITIAL_ZOOM)
-                            mMapView.getController().setZoom(INITIAL_ZOOM);
-                        mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
-                    }
-                });
-	            }
-	        });
-			mMyPosOverlay.enable();
-    	}
-	    overlays.add(mMyPosOverlay);
+		});
+		mMyPosOverlay.enable();
 		mMapView.invalidate();
     }
     
