@@ -1,23 +1,23 @@
 package com.boombuler.piraten.map;
 
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceManager;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
-
-import java.util.List;
 
 import com.boombuler.piraten.map.data.ServerInfo;
 
@@ -135,15 +135,19 @@ public class SettingsActivity extends PreferenceActivity implements OnPreference
 	
 	public boolean onPreferenceClick(Preference preference) {
 		if (preference.getKey().equals(KEY_ABOUT_SERVER)) {
-			Spanned htmltext = Html.fromHtml(getServerInfo());
-			AlertDialog dlg = new AlertDialog.Builder(this)
-				.setMessage(htmltext)
-				.setTitle(R.string.about_server)
-				.setIcon(android.R.drawable.ic_dialog_info)
-				.setPositiveButton(android.R.string.ok, null)
-				.show();
-			((TextView)dlg.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+			String serverInfo = getServerInfo();
+			if (serverInfo == null) {
+				serverInfo = getResources().getString(R.string.no_server_selected);
+			}
 			
+			Spanned htmltext = Html.fromHtml(serverInfo);
+			AlertDialog dlg = new AlertDialog.Builder(this)
+			.setMessage(htmltext)
+			.setTitle(R.string.about_server)
+			.setIcon(android.R.drawable.ic_dialog_info)
+			.setPositiveButton(android.R.string.ok, null)
+			.show();
+			((TextView)dlg.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
 		}
 		return false;
 	}

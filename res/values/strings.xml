@@ -88,6 +88,7 @@
         
         <string name="about_server">Server Info</string>
         <string name="about_server_summary">Zeigt Informationen über den aktuell gewählten Server</string>
+        <string name="no_server_selected">Es wurde noch kein Server ausgewählt.</string>
         
         <string name="ask_server_change">Wenn der Server geändert wird, werden alle nicht gesendeten Daten verworfen.</string>
         <string name="alert_error">Fehler</string>
