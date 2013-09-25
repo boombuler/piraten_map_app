@@ -117,7 +117,10 @@ public class PirateMap extends Activity {
                     public void run() {
                         if (mMapView.getZoomLevel() < INITIAL_ZOOM)
                             mMapView.getController().setZoom(INITIAL_ZOOM);
-                        mMapView.getController().animateTo(mMyPosOverlay.getMyLocation());
+                        GeoPoint location = mMyPosOverlay.getMyLocation();
+                    	if(mMyPosOverlay != null && location != null) {
+                    		mMapView.getController().animateTo(location);
+                    	}
                     }
                 });
 	            }
