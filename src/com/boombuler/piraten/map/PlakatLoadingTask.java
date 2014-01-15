@@ -6,6 +6,7 @@ import org.osmdroid.views.MapView;
 
 import android.os.AsyncTask;
 
+import com.boombuler.piraten.map.data.DBAdapter;
 import com.boombuler.piraten.map.data.PlakatOverlay;
 import com.boombuler.piraten.map.data.PlakatOverlayItem;
 import com.boombuler.piraten.map.data.PlakatOverlayItemFilter;

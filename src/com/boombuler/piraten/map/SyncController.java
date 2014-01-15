@@ -10,6 +10,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import com.boombuler.piraten.map.data.DBAdapter;
 import com.boombuler.piraten.map.data.PlakatOverlayItem;
 import com.boombuler.piraten.map.proto.Api.AddRequest;
 import com.boombuler.piraten.map.proto.Api.BoundingBox;

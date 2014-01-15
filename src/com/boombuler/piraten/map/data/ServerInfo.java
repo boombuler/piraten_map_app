@@ -1,7 +1,5 @@
 package com.boombuler.piraten.map.data;
 
-import com.boombuler.piraten.map.DBAdapter;
-
 import android.database.Cursor;
 
 /**

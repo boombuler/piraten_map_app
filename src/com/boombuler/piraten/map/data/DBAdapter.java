@@ -1,4 +1,4 @@
-package com.boombuler.piraten.map;
+package com.boombuler.piraten.map.data;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,9 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.boombuler.piraten.map.data.PlakatOverlayItem;
-import com.boombuler.piraten.map.data.PlakatOverlayItemFilter;
-import com.boombuler.piraten.map.data.ServerInfo;
+import com.boombuler.piraten.map.PirateMap;
 
 public class DBAdapter {
 

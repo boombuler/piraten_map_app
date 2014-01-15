@@ -1,4 +1,4 @@
-package com.boombuler.piraten.map;
+package com.boombuler.piraten.map.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

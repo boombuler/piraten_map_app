@@ -12,6 +12,7 @@ import org.apache.http.util.EntityUtils;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
+import com.boombuler.piraten.map.data.DBAdapter;
 import com.boombuler.piraten.utils.JsonArray;
 import com.boombuler.piraten.utils.JsonObject;
 import com.boombuler.piraten.utils.JsonParser;

@@ -1,5 +1,6 @@
 package com.boombuler.piraten.map;
 
+import com.boombuler.piraten.map.data.DBAdapter;
 import com.boombuler.piraten.map.data.PlakatOverlayItem;
 
 import android.app.Activity;

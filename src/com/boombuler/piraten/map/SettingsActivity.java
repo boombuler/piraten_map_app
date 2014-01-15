@@ -19,6 +19,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.boombuler.piraten.map.data.DBAdapter;
 import com.boombuler.piraten.map.data.ServerInfo;
 
 public class SettingsActivity extends PreferenceActivity implements OnPreferenceChangeListener, OnPreferenceClickListener {

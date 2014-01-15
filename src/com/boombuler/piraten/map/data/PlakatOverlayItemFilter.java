@@ -7,8 +7,6 @@ import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.boombuler.piraten.map.DBAdapter;
-
 public class PlakatOverlayItemFilter implements Serializable, Parcelable {
 	private static final long serialVersionUID = -2586431607660575426L;
 
