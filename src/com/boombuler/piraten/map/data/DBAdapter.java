@@ -165,7 +165,7 @@ public class DBAdapter {
 					else if (typ == CHANGE_TYPE_CHANGED)
 						changed.add(getOverlayItem(id));
 					else if (typ == CHANGE_TYPE_DELETED)
-						deleted.add(new Integer(id));
+						deleted.add(Integer.valueOf(id));
 
 					changes.moveToNext();
 				}

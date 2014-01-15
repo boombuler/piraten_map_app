@@ -19,6 +19,6 @@
         android:layout_marginTop="2dip"
         android:layout_marginBottom="2dip"
         android:textColor="@color/marker_select_font"
-        android:text="ABC" android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"/>
 
     </LinearLayout>

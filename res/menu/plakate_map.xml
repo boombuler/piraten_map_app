@@ -3,17 +3,17 @@
     <item android:id="@+id/menu_sync"
           android:icon="@drawable/ic_menu_refresh"
           android:title="@string/menu_sync"
-          android:showAsAction="always" />
+          android:showAsAction="ifRoom" />
     
     <item android:id="@+id/menu_add"
           android:icon="@drawable/ic_menu_add"
           android:title="@string/menu_add"
-          android:showAsAction="always" />
+          android:showAsAction="ifRoom" />
     
-    <item android:id="@+id/menu_my_location"
-          android:icon="@drawable/ic_menu_my_location"
+    <item android:id="@+id/menu_my_location"          
+          android:icon="@drawable/device_access_location_found"
           android:title="@string/menu_my_location"
-          android:showAsAction="always" />
+          android:showAsAction="ifRoom" />
     
     <item android:id="@+id/menu_filter"
           android:icon="@drawable/filter"

@@ -131,9 +131,9 @@ public class JsonParser {
         if ("null".equals(s))
             return null;
         else if ("true".equals(s))
-            return new Boolean(true);
+            return Boolean.valueOf(true);
         else if ("false".equals(s))
-            return new Boolean(false);
+            return Boolean.valueOf(false);
         else throw new ParseException();
     }
 
