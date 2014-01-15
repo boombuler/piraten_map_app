@@ -6,7 +6,6 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Overlay;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,8 +13,9 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,8 +23,9 @@ import android.view.MenuItem;
 import com.boombuler.piraten.map.data.PlakatOverlay;
 import com.boombuler.piraten.map.data.PlakatOverlayItem;
 import com.boombuler.piraten.map.data.PlakatOverlayItemFilter;
+import com.boombuler.piraten.map.fragments.FilterFragment;
 
-public class PirateMap extends Activity {
+public class PirateMap extends FragmentActivity {
 	private MapView mMapView;
 	private CurrentPositionOverlay mMyPosOverlay;
 	protected PlakatOverlay plakatOverlay;
@@ -94,13 +95,13 @@ public class PirateMap extends Activity {
             	StartSync();
                 return true;
             case R.id.menu_add:
-            	AddMarker();
+            	addMarker();
 				return true;
             case R.id.menu_my_location:
             	moveToMyLocation();
             	return true;
             case R.id.menu_filter:
-            	search();
+            	openfilterDialog();
             	return true;
             case R.id.menu_settings:
             	startActivity(new Intent(PirateMap.this, SettingsActivity.class));
@@ -127,7 +128,7 @@ public class PirateMap extends Activity {
         return true;
     }
     
-    private void buildMap(PlakatOverlayItemFilter mFilter) {
+    public void buildMap(PlakatOverlayItemFilter mFilter) {
     	final List<Overlay> overlays = mMapView.getOverlays();
 		overlays.clear();
     	
@@ -167,13 +168,15 @@ public class PirateMap extends Activity {
     	super.onPause();
     }
     
-    private void search(){
-    	Intent intent = new Intent(PirateMap.this, FilterActivity.class);
-		if (mFilter!=null) intent.putExtra(Constants.EXTRA_ITEMFILTER, (Parcelable)mFilter);
-		startActivityForResult(intent, Constants.REQ_FILTER);
+    private void openfilterDialog(){
+    	// Create the fragment and show it as a dialog.
+    	FragmentManager fragmentManager = getSupportFragmentManager();
+	    FilterFragment newFragment = new FilterFragment();
+	    newFragment.setFilter(mFilter);
+	    newFragment.show(fragmentManager, "filterDialog");
     }
 
-    private void AddMarker() {
+    private void addMarker() {
         boolean hasSyncedBefore = PreferenceManager.getDefaultSharedPreferences(this)
                                                    .getBoolean(SettingsActivity.KEY_HAS_SYNCED, false);
         if (!hasSyncedBefore) {

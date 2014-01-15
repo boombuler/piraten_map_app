@@ -20,7 +20,7 @@
     
     <string name="btSave">Speichern</string>
     <string name="filter_title">Filter</string>
-    <string name="button_filter">filtern</string>
+    <string name="button_filter">Filtern</string>
     <string name="choose_election">Markertypen</string>
     <string-array name="election_array">
         <item>Alle Marker</item>
