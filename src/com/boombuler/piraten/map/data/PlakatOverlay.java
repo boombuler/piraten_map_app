@@ -51,7 +51,7 @@ public class PlakatOverlay extends ItemizedOverlay<PlakatOverlayItem> {
 			pj.toMapPixels(item.getPoint(), mCurScreenCoords);
 
 			if (bBox.contains(item.getPoint())) {				
-				onDrawItem((Canvas) canvas, item, mCurScreenCoords);
+				onDrawItem(canvas, item, mCurScreenCoords, 0.0f);
 			}
 			
 		}
