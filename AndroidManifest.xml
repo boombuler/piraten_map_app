@@ -26,5 +26,9 @@
 		          android:theme="@style/MapAppTheme" />
 		<activity android:name=".SettingsActivity" 
 		    />
+		<activity android:name=".AboutActivity" 
+		    android:label="@string/about_title"
+		    />
+		
     </application>
 </manifest>

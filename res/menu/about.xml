@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_ok"
+        android:title="@string/menu_ok"
+        android:orderInCategory="100"
+		android:icon="@drawable/navigation_accept"
+		android:showAsAction="ifRoom|withText"
+        />
+</menu>

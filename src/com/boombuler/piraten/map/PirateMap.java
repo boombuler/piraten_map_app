@@ -115,6 +115,9 @@ public class PirateMap extends FragmentActivity {
 	            	return true;
             	}
             	return false;
+            case R.id.menu_about:
+				startActivity(new Intent(PirateMap.this, AboutActivity.class));
+				return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

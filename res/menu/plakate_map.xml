@@ -24,4 +24,9 @@
           android:icon="@drawable/ic_menu_preferences"
           android:title="@string/settings"
           android:showAsAction="withText" />
+    
+    <item android:id="@+id/menu_about"
+          android:icon="@drawable/ic_menu_preferences"
+          android:title="@string/about"
+          android:showAsAction="withText" />
 </menu>
