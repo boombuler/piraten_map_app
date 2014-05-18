@@ -11,7 +11,6 @@ import org.osmdroid.views.overlay.ItemizedOverlay;
 import org.osmdroid.views.safecanvas.ISafeCanvas;
 
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.Point;
 
 import com.boombuler.piraten.map.Constants;

@@ -36,7 +36,7 @@ public class FilterFragment extends DialogFragment {
 				@Override
 				public void onItemSelected(AdapterView<?> parent, View view,
 						int pos, long id) {
-					FilterFragment.this.setPlakatOverlayItemFilter(pos);
+					FilterFragment.this.setPlakatOverlayItemFilter(pos-1);
 				}
 
 				@Override
