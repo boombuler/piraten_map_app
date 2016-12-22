@@ -34,7 +34,7 @@
 		    android:summary="@string/setting_load_range_summary"
 		    android:entries="@array/sync_range_titles"
 		    android:entryValues="@array/sync_range"
-		    android:defaultValue="20000"/>
+		    android:defaultValue="5000"/>
 	</PreferenceCategory>
 
 </PreferenceScreen>
