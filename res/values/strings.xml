@@ -70,7 +70,9 @@
         <string name="setting_load_range">Datenabgleich</string>
         <string name="setting_load_range_summary">Gibt an in welchen Umkreis die Plakate geladen werden sollen.</string>
         <string-array name="sync_range_titles">
+            <item>2 km</item>
             <item>5 km</item>
+            <item>10 km</item>
             <item>20 km</item>
             <item>50 km</item>
             <item>100 km</item>
@@ -78,7 +80,9 @@
             <item>Alle</item>
         </string-array>
         <string-array name="sync_range">
+            <item>2000</item>
             <item>5000</item>
+            <item>10000</item>
             <item>20000</item>
             <item>50000</item>
             <item>100000</item>
